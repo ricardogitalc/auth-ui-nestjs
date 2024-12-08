@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { getSession, login, logout } from "@/auth/auth";
+import { getSession, login, logout } from "@/auth/session/auth-session";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
