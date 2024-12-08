@@ -4,24 +4,53 @@ import { Label } from "@/components/ui/label";
 import { GoogleButton } from "./google-button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
-interface RegisterProps {
-  onLogin: () => void;
-}
-
-export function RegisterForm({ onLogin }: RegisterProps) {
+export function RegisterForm() {
   const [showPasswords, setShowPasswords] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    whatsapp: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Register Data:", formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
 
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="firstName">Nome</Label>
-          <Input id="firstName" placeholder="John" required />
+          <Input
+            id="firstName"
+            placeholder="John"
+            required
+            value={formData.firstName}
+            onChange={handleChange}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastName">Sobrenome</Label>
-          <Input id="lastName" placeholder="Doe" required />
+          <Input
+            id="lastName"
+            placeholder="Doe"
+            required
+            value={formData.lastName}
+            onChange={handleChange}
+          />
         </div>
       </div>
       <div className="space-y-2">
@@ -31,6 +60,8 @@ export function RegisterForm({ onLogin }: RegisterProps) {
           type="email"
           placeholder="exemplo@gmail.com"
           required
+          value={formData.email}
+          onChange={handleChange}
         />
       </div>
       <div className="space-y-2">
@@ -41,6 +72,8 @@ export function RegisterForm({ onLogin }: RegisterProps) {
             type={showPasswords ? "text" : "password"}
             placeholder="******"
             required
+            value={formData.password}
+            onChange={handleChange}
           />
           <button
             type="button"
@@ -63,6 +96,8 @@ export function RegisterForm({ onLogin }: RegisterProps) {
             type={showPasswords ? "text" : "password"}
             placeholder="******"
             required
+            value={formData.confirmPassword}
+            onChange={handleChange}
           />
           <button
             type="button"
@@ -84,6 +119,8 @@ export function RegisterForm({ onLogin }: RegisterProps) {
           type="tel"
           placeholder="ex: 11999999999"
           required
+          value={formData.whatsapp}
+          onChange={handleChange}
         />
       </div>
       <Button type="submit" className="w-full">
@@ -92,13 +129,9 @@ export function RegisterForm({ onLogin }: RegisterProps) {
       <GoogleButton />
       <p className="text-center text-sm">
         Já possui uma conta?{" "}
-        <button
-          type="button"
-          onClick={onLogin}
-          className="text-blue-600 hover:underline"
-        >
+        <Link href="/entrar" className="text-blue-600 hover:underline">
           Entrar
-        </button>
+        </Link>
       </p>
     </form>
   );

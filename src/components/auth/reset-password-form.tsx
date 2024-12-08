@@ -3,16 +3,29 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
-interface ResetPasswordProps {
-  onLogin: () => void;
-}
-
-export function ResetPasswordForm({ onLogin }: ResetPasswordProps) {
+export function ResetPasswordForm() {
   const [showPasswords, setShowPasswords] = useState(false);
+  const [formData, setFormData] = useState({
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Reset Password Data:", formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
 
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="space-y-2">
         <Label htmlFor="newPassword">Nova senha</Label>
         <div className="relative">
@@ -21,6 +34,8 @@ export function ResetPasswordForm({ onLogin }: ResetPasswordProps) {
             type={showPasswords ? "text" : "password"}
             placeholder="******"
             required
+            value={formData.newPassword}
+            onChange={handleChange}
           />
           <button
             type="button"
@@ -43,6 +58,8 @@ export function ResetPasswordForm({ onLogin }: ResetPasswordProps) {
             type={showPasswords ? "text" : "password"}
             placeholder="******"
             required
+            value={formData.confirmNewPassword}
+            onChange={handleChange}
           />
           <button
             type="button"
@@ -62,13 +79,9 @@ export function ResetPasswordForm({ onLogin }: ResetPasswordProps) {
       </Button>
       <p className="text-center text-sm">
         Entrar na sua conta?{" "}
-        <button
-          type="button"
-          onClick={onLogin}
-          className="text-blue-600 hover:underline"
-        >
+        <Link href="/entrar" className="text-blue-600 hover:underline">
           Entrar
-        </button>
+        </Link>
       </p>
     </form>
   );

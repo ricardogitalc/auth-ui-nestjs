@@ -4,17 +4,29 @@ import { Label } from "@/components/ui/label";
 import { GoogleButton } from "./google-button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
-interface LoginProps {
-  onRegister: () => void;
-  onForgotPassword: () => void;
-}
-
-export function LoginForm({ onRegister, onForgotPassword }: LoginProps) {
+export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Login Data:", formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
 
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -22,6 +34,8 @@ export function LoginForm({ onRegister, onForgotPassword }: LoginProps) {
           type="email"
           placeholder="exemplo@gmail.com"
           required
+          value={formData.email}
+          onChange={handleChange}
         />
       </div>
       <div className="space-y-2">
@@ -32,6 +46,8 @@ export function LoginForm({ onRegister, onForgotPassword }: LoginProps) {
             type={showPassword ? "text" : "password"}
             placeholder="******"
             required
+            value={formData.password}
+            onChange={handleChange}
           />
           <button
             type="button"
@@ -46,13 +62,14 @@ export function LoginForm({ onRegister, onForgotPassword }: LoginProps) {
           </button>
         </div>
       </div>
-      <button
-        type="button"
-        onClick={onForgotPassword}
-        className="text-sm text-blue-600 hover:underline"
-      >
-        Esqueceu a senha?
-      </button>
+      <div>
+        <Link
+          href="/esqueceu"
+          className="text-sm text-blue-600 hover:underline"
+        >
+          Esqueceu a senha?
+        </Link>
+      </div>
 
       <Button type="submit" className="w-full">
         Entrar
@@ -61,13 +78,9 @@ export function LoginForm({ onRegister, onForgotPassword }: LoginProps) {
       <div className="text-center space-y-2">
         <p className="text-sm">
           Não tem uma conta?{" "}
-          <button
-            type="button"
-            onClick={onRegister}
-            className="text-blue-600 hover:underline"
-          >
+          <Link href="/cadastrar" className="text-blue-600 hover:underline">
             Criar
-          </button>
+          </Link>
         </p>
       </div>
     </form>
