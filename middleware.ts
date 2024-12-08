@@ -1,4 +1,4 @@
-import { updateSession } from "@/lib/auth/lib";
+import { updateSession } from "@/auth/auth";
 import { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
