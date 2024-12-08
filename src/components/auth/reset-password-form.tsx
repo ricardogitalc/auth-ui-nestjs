@@ -9,7 +9,6 @@ export function ResetPasswordForm() {
   const [showPasswords, setShowPasswords] = useState(false);
   const [formData, setFormData] = useState({
     newPassword: "",
-    confirmNewPassword: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -58,7 +57,6 @@ export function ResetPasswordForm() {
             type={showPasswords ? "text" : "password"}
             placeholder="******"
             required
-            value={formData.confirmNewPassword}
             onChange={handleChange}
           />
           <button

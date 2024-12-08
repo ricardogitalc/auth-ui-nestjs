@@ -22,7 +22,7 @@ import { KeySquare } from "./key-square";
 
 export default async function Navbar() {
   return (
-    <header className="w-full border-b bg-card">
+    <header className="w-full bg-muted-foreground/5">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">

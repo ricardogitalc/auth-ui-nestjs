@@ -13,7 +13,6 @@ export function RegisterForm() {
     lastName: "",
     email: "",
     password: "",
-    confirmPassword: "",
     whatsapp: "",
   });
 
@@ -96,7 +95,6 @@ export function RegisterForm() {
             type={showPasswords ? "text" : "password"}
             placeholder="******"
             required
-            value={formData.confirmPassword}
             onChange={handleChange}
           />
           <button
