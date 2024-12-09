@@ -5,6 +5,9 @@ import { GoogleButton } from "./google-button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { loginAction } from "@/auth/actions/auth-actions";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,10 +15,34 @@ export function LoginForm() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login Data:", formData);
+    setLoading(true);
+
+    try {
+      const response = await loginAction(formData);
+
+      if (response.message === "Login realizado.") {
+        toast({
+          title: "Sucesso!",
+          description: response.message,
+          variant: "default",
+        });
+        router.push("/");
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erro no login",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,8 +98,8 @@ export function LoginForm() {
         </Link>
       </div>
 
-      <Button type="submit" className="w-full">
-        Entrar
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? "Entrando..." : "Entrar"}
       </Button>
       <GoogleButton />
       <div className="text-center space-y-2">

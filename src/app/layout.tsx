@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
-import { SWRConfig } from "swr";
+import SWRProvider from "@/components/providers/swr-provider";
 import { swrConfig } from "@/auth/client/swr-config";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,13 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SWRConfig value={swrConfig}>
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
+        <SWRProvider>
           <Navbar />
           {children}
-        </SWRConfig>
+          <Toaster />
+        </SWRProvider>
       </body>
     </html>
   );
