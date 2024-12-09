@@ -5,6 +5,7 @@ import { LOGIN_MUTATION } from "@/auth/graphql/auth-querys-mutations";
 import { LoginInput, LoginResponse } from "@/auth/types/auth-types";
 import { cookies } from "next/headers";
 import { getErrorMessage } from "@/auth/utils/error-handler";
+import { redirect } from "next/navigation";
 
 export async function loginAction(
   credentials: LoginInput
@@ -42,4 +43,19 @@ export async function loginAction(
   } catch (error: any) {
     throw new Error(getErrorMessage(error));
   }
+}
+
+export async function logoutAction() {
+  const cookieStore = cookies();
+
+  const accessToken = await cookieStore.get("accessToken");
+  const refreshToken = await cookieStore.get("refreshToken");
+
+  if (!accessToken && !refreshToken) {
+    return;
+  }
+
+  cookieStore.set("accessToken", "", { expires: new Date(0) });
+  cookieStore.set("refreshToken", "", { expires: new Date(0) });
+  redirect("/entrar");
 }

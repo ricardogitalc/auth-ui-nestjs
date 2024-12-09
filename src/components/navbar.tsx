@@ -19,8 +19,9 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { KeySquare } from "./key-square";
+import { logoutAction } from "@/auth/actions/auth-actions";
 
-export default async function Navbar() {
+export default function Navbar() {
   return (
     <header className="w-full bg-muted-foreground/5">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
@@ -92,12 +93,19 @@ export default async function Navbar() {
                   </DropdownMenuItem>
                 </Link>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <button className="w-full flex cursor-pointer items-center">
-                    <LogOutIcon className="mr-2 h-4 w-4 text-red-500" />
-                    <span className="text-red-500">Sair</span>
-                  </button>
-                </DropdownMenuItem>
+                <form
+                  action={async () => {
+                    "use server";
+                    await logoutAction();
+                  }}
+                >
+                  <DropdownMenuItem asChild>
+                    <button className="w-full flex cursor-pointer items-center">
+                      <LogOutIcon className="mr-2 h-4 w-4 text-red-500" />
+                      <span className="text-red-500">Sair</span>
+                    </button>
+                  </DropdownMenuItem>
+                </form>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
