@@ -5,9 +5,10 @@ import { GoogleButton } from "./google-button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { loginAction } from "@/auth/actions/auth-actions";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+
+import { loginAction } from "@/auth/actions/auth-actions";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
