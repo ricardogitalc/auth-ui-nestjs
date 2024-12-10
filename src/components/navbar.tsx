@@ -19,7 +19,7 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { KeySquare } from "./key-square";
-import { logoutAction } from "@/auth/actions/auth-actions";
+import { logout } from "@/auth/actions/auth-actions";
 
 export default function Navbar() {
   return (
@@ -96,7 +96,7 @@ export default function Navbar() {
                 <form
                   action={async () => {
                     "use server";
-                    await logoutAction();
+                    await logout();
                   }}
                 >
                   <DropdownMenuItem asChild>

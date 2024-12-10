@@ -1,13 +1,14 @@
-"use server";
+"use server"
 
-import { graphqlClient } from "@/auth/client/graphql-client";
-import { LOGIN_MUTATION } from "@/auth/graphql/auth-querys-mutations";
-import { LoginInput, LoginResponse } from "@/auth/types/auth-types";
 import { cookies } from "next/headers";
-import { getErrorMessage } from "@/auth/utils/error-handler";
+import type { GetProfileQuery, LoginInput, LoginResponse } from "../types/auth-types";
 import { redirect } from "next/navigation";
+import { graphqlClient } from "../client/graphql-client";
+import { GET_PROFILE_QUERY, LOGIN_MUTATION } from "../graphql/auth-querys-mutations";
+import { jwtVerify, SignJWT } from "jose";
+import { getErrorMessage } from "../utils/error-handler";
 
-export async function loginAction(
+export async function login(
   credentials: LoginInput
 ): Promise<LoginResponse> {
   try {
@@ -25,19 +26,27 @@ export async function loginAction(
 
     cookieStore.set("accessToken", accessToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24,
     });
 
     cookieStore.set("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
     });
+
+    const profileResponse = await graphqlClient.request<GetProfileQuery>(
+      GET_PROFILE_QUERY,
+      {},
+      {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    );
+
+    await updateSession(profileResponse.getProfile);
 
     return response.loginUser;
   } catch (error: any) {
@@ -45,17 +54,35 @@ export async function loginAction(
   }
 }
 
-export async function logoutAction() {
+export type SessionUser = GetProfileQuery['getProfile'];
+
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key');
+
+export async function getSession(): Promise<SessionUser | null> {
   const cookieStore = cookies();
+  const session = cookieStore.get('session');
 
-  const accessToken = await cookieStore.get("accessToken");
-  const refreshToken = await cookieStore.get("refreshToken");
-
-  if (!accessToken && !refreshToken) {
-    return;
+  if (!session) {
+    return null;
   }
 
-  cookieStore.set("accessToken", "", { expires: new Date(0) });
-  cookieStore.set("refreshToken", "", { expires: new Date(0) });
+  try {
+    const { payload } = await jwtVerify(session.value, SECRET);
+    return payload as SessionUser;
+  } catch {
+    await logout();
+    return null;
+  }
+}
+
+export async function updateSession(user: SessionUser) {
+  // função refresh token
+}
+
+export async function logout() {
+  const cookieStore = cookies();
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
+  cookieStore.delete("user_session");
   redirect("/entrar");
 }

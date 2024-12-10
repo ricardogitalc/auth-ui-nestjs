@@ -8,3 +8,17 @@ export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };
+
+export interface GetProfileQuery {
+  getProfile: {
+    id: number;
+    role: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    whatsapp: string;
+    verified: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+}

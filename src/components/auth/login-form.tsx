@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-import { loginAction } from "@/auth/actions/auth-actions";
+import { login } from "@/auth/actions/auth-actions";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      const response = await loginAction(formData);
+      const response = await login(formData);
 
       if (response.message === "Login realizado.") {
         toast({
@@ -39,7 +39,7 @@ export function LoginForm() {
       toast({
         variant: "destructive",
         title: "Erro no login",
-        description: error.message,
+        description: error.message || "Ocorreu um erro inesperado",
       });
     } finally {
       setLoading(false);

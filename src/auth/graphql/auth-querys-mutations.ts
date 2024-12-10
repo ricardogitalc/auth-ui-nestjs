@@ -9,3 +9,19 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `;
+
+export const GET_PROFILE_QUERY = gql`
+  query GetProfile {
+    getProfile {
+      id
+      role
+      firstName
+      lastName
+      email
+      whatsapp
+      verified
+      createdAt
+      updatedAt
+    }
+  }
+`;
