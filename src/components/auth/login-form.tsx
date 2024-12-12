@@ -27,7 +27,7 @@ export function LoginForm() {
     try {
       const response = await login(formData);
 
-      if (response.message === "Login realizado.") {
+      if (response.accessToken) {
         toast({
           title: "Sucesso!",
           description: response.message,

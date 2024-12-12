@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import SWRProvider from "@/components/providers/swr-provider";
 import { swrConfig } from "@/auth/client/swr-config";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,11 +31,18 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
         <SWRProvider>
           <Navbar />
           {children}
           <Toaster />
         </SWRProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

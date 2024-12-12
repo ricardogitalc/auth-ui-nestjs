@@ -22,3 +22,16 @@ export interface GetProfileQuery {
     updatedAt: string;
   }
 }
+
+export type SessionUser = GetProfileQuery['getProfile'];
+
+export type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type SessionResponse = {
+  user: SessionUser | null;
+  isLoading: boolean;
+  error?: Error;
+};
