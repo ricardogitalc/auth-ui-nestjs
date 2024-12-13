@@ -35,7 +35,7 @@ export default async function Navbar() {
             </Link>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <ModeToggle/>
+            <ModeToggle />
             {!session ? (
               <>
                 <Link href="/entrar">
@@ -54,7 +54,7 @@ export default async function Navbar() {
                   >
                     <Avatar className="w-8 h-8">
                       <AvatarFallback className="bg-muted-foreground/10">
-                      <User className="w-4 h-4" />
+                        <User className="w-4 h-4" />
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -62,7 +62,9 @@ export default async function Navbar() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel className="flex m-2">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{session.firstName}</p>
+                      <p className="text-sm font-medium leading-none">
+                        {session.firstName}
+                      </p>
                       <p className="text-xs leading-none text-muted-foreground">
                         {session.email}
                       </p>
