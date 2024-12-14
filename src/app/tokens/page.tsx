@@ -2,7 +2,7 @@ import {
   isValidAcessToken,
   isValidRefreshToken,
   refreshAccessToken,
-} from "@/auth/actions/auth-actions";
+} from "@/auth/session/auth-session";
 import { revalidatePath } from "next/cache";
 
 async function refreshTokenAction() {

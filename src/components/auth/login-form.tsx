@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-import { login } from "@/auth/actions/auth-actions";
+import { login } from "@/auth/session/auth-session";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);

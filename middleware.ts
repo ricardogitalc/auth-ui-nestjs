@@ -1,7 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { getSession } from "./src/auth/actions/auth-actions";
+import { updateSession } from "@/auth/session/auth-session";
+import { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const session = await getSession();
-  return NextResponse.next();
+  return await updateSession(request);
 }

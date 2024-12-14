@@ -10,19 +10,29 @@ import type {
 } from "../types/auth-types";
 import { redirect } from "next/navigation";
 import { graphqlClient } from "../client/graphql-client";
-import {
-  LOGIN_MUTATION,
-  REFRESH_TOKEN_MUTATION,
-} from "../graphql/auth-querys-mutations";
+import { LOGIN_MUTATION, REFRESH_TOKEN_MUTATION } from "../calls/graphql-calls";
 import { getErrorMessage } from "../utils/error-handler";
 import type { RefreshResponse } from "../types/graphql-types";
+import { NextResponse, type NextRequest } from "next/server";
 
 const JWT_KEY = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
 const REFRESH_KEY = new TextEncoder().encode(process.env.REFRESH_SECRET_KEY);
 
 async function decryptJWT(token: string, secret: Uint8Array) {
-  const key = createHash("sha256").update(secret).digest();
-  return await jose.jwtDecrypt(token, key);
+  try {
+    const key = createHash("sha256").update(secret).digest();
+    return await jose.jwtDecrypt(token, key, {
+      clockTolerance: 60,
+    });
+  } catch (error: any) {
+    if (error.code === "ERR_JWT_EXPIRED") {
+      throw new Error("Token expirado");
+    }
+    if (error.code === "ERR_JWT_CLAIM_VALIDATION_FAILED") {
+      throw new Error("Falha na validação do token");
+    }
+    throw error;
+  }
 }
 
 export async function login(credentials: LoginInput): Promise<LoginResponse> {
@@ -34,14 +44,13 @@ export async function login(credentials: LoginInput): Promise<LoginResponse> {
     );
     const { accessToken, refreshToken } = response.loginUser;
 
-    const cookieStore = await cookies();
-    cookieStore.set("accessToken", accessToken, {
+    cookies().set("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
     });
-    cookieStore.set("refreshToken", refreshToken, {
+    cookies().set("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -57,13 +66,12 @@ export async function login(credentials: LoginInput): Promise<LoginResponse> {
 }
 
 export async function getSession(): Promise<SessionUser | null> {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
+  const accessToken = cookies().get("accessToken")?.value;
+  const isAccessValid = await isValidAcessToken();
 
-  if (!accessToken) {
+  if (!accessToken || !isAccessValid) {
     return null;
   }
-
   try {
     const { payload } = await decryptJWT(accessToken, JWT_KEY);
     return {
@@ -83,15 +91,13 @@ export async function getSession(): Promise<SessionUser | null> {
 }
 
 export async function logout() {
-  const cookieStore = await cookies();
-  await cookieStore.set("accessToken", "", { expires: new Date(0) });
-  await cookieStore.set("refreshToken", "", { expires: new Date(0) });
+  await cookies().set("accessToken", "", { expires: new Date(0) });
+  await cookies().set("refreshToken", "", { expires: new Date(0) });
   redirect("/entrar");
 }
 
 export async function isValidAcessToken(): Promise<boolean> {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
+  const accessToken = cookies().get("accessToken")?.value;
 
   if (!accessToken) {
     return false;
@@ -99,7 +105,6 @@ export async function isValidAcessToken(): Promise<boolean> {
 
   try {
     const { payload } = await decryptJWT(accessToken, JWT_KEY);
-    console.log("AccessToken Payload:", JSON.stringify(payload, null, 2));
     const expirationTime = (payload.exp || 0) * 1000;
     return Date.now() < expirationTime;
   } catch {
@@ -108,8 +113,7 @@ export async function isValidAcessToken(): Promise<boolean> {
 }
 
 export async function isValidRefreshToken(): Promise<boolean> {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get("refreshToken")?.value;
+  const refreshToken = cookies().get("refreshToken")?.value;
 
   if (!refreshToken) {
     return false;
@@ -125,8 +129,8 @@ export async function isValidRefreshToken(): Promise<boolean> {
 }
 
 export async function refreshAccessToken(): Promise<string | null> {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get("refreshToken")?.value;
+  "use server";
+  const refreshToken = cookies().get("refreshToken")?.value;
 
   if (!refreshToken) {
     return null;
@@ -140,7 +144,7 @@ export async function refreshAccessToken(): Promise<string | null> {
 
     const { accessToken } = response.refreshToken;
 
-    cookieStore.set("accessToken", accessToken, {
+    cookies().set("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -152,4 +156,8 @@ export async function refreshAccessToken(): Promise<string | null> {
     console.error("Erro ao atualizar o token:", error);
     return null;
   }
+}
+
+export async function updateSession(request: NextRequest) {
+  return NextResponse.next();
 }

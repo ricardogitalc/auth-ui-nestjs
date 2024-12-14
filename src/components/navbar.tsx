@@ -19,7 +19,7 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { KeySquare } from "./key-square";
-import { logout, getSession } from "@/auth/actions/auth-actions";
+import { logout, getSession } from "@/auth/session/auth-session";
 import { ModeToggle } from "./theme/mode-toggle";
 
 export default async function Navbar() {
