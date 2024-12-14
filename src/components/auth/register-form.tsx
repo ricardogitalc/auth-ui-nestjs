@@ -29,101 +29,103 @@ export function RegisterForm() {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="firstName">Nome</Label>
-          <Input
-            id="firstName"
-            placeholder="John"
-            required
-            value={formData.firstName}
-            onChange={handleChange}
-          />
+    <div className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="firstName">Nome</Label>
+            <Input
+              id="firstName"
+              placeholder="John"
+              required
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="lastName">Sobrenome</Label>
+            <Input
+              id="lastName"
+              placeholder="Doe"
+              required
+              value={formData.lastName}
+              onChange={handleChange}
+            />
+          </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="lastName">Sobrenome</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
-            id="lastName"
-            placeholder="Doe"
+            id="email"
+            type="email"
+            placeholder="exemplo@gmail.com"
             required
-            value={formData.lastName}
+            value={formData.email}
             onChange={handleChange}
           />
         </div>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="exemplo@gmail.com"
-          required
-          value={formData.email}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">Senha</Label>
-        <div className="relative">
+        <div className="space-y-2">
+          <Label htmlFor="password">Senha</Label>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPasswords ? "text" : "password"}
+              placeholder="******"
+              required
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPasswords(!showPasswords)}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              {showPasswords ? (
+                <EyeOff className="h-5 w-5 text-muted-foreground" />
+              ) : (
+                <Eye className="h-5 w-5 text-muted-foreground" />
+              )}
+            </button>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword">Confirmar senha</Label>
+          <div className="relative">
+            <Input
+              id="confirmPassword"
+              type={showPasswords ? "text" : "password"}
+              placeholder="******"
+              required
+              onChange={handleChange}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPasswords(!showPasswords)}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              {showPasswords ? (
+                <EyeOff className="h-5 w-5 text-muted-foreground" />
+              ) : (
+                <Eye className="h-5 w-5 text-muted-foreground" />
+              )}
+            </button>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="whatsapp">Número do WhatsApp</Label>
           <Input
-            id="password"
-            type={showPasswords ? "text" : "password"}
-            placeholder="******"
+            id="whatsapp"
+            type="tel"
+            placeholder="ex: 11999999999"
             required
-            value={formData.password}
+            value={formData.whatsapp}
             onChange={handleChange}
           />
-          <button
-            type="button"
-            onClick={() => setShowPasswords(!showPasswords)}
-            className="absolute right-3 top-1/2 -translate-y-1/2"
-          >
-            {showPasswords ? (
-              <EyeOff className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <Eye className="h-5 w-5 text-muted-foreground" />
-            )}
-          </button>
         </div>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirmar senha</Label>
-        <div className="relative">
-          <Input
-            id="confirmPassword"
-            type={showPasswords ? "text" : "password"}
-            placeholder="******"
-            required
-            onChange={handleChange}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPasswords(!showPasswords)}
-            className="absolute right-3 top-1/2 -translate-y-1/2"
-          >
-            {showPasswords ? (
-              <EyeOff className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <Eye className="h-5 w-5 text-muted-foreground" />
-            )}
-          </button>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="whatsapp">Número do WhatsApp</Label>
-        <Input
-          id="whatsapp"
-          type="tel"
-          placeholder="ex: 11999999999"
-          required
-          value={formData.whatsapp}
-          onChange={handleChange}
-        />
-      </div>
-      <Button type="submit" className="w-full">
-        Criar conta
-      </Button>
+        <Button type="submit" className="w-full">
+          Criar conta
+        </Button>
+      </form>
       <GoogleButton />
       <p className="text-center text-sm">
         Já possui uma conta?{" "}
@@ -131,6 +133,6 @@ export function RegisterForm() {
           Entrar
         </Link>
       </p>
-    </form>
+    </div>
   );
 }

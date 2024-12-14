@@ -19,8 +19,8 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { KeySquare } from "./key-square";
-import { logout, getSession } from "@/auth/session/auth-session";
 import { ModeToggle } from "./theme/mode-toggle";
+import { getSession, logoutSession } from "@/auth/session/auth-session-rest";
 
 export default async function Navbar() {
   const session = await getSession();
@@ -106,7 +106,7 @@ export default async function Navbar() {
                   <form
                     action={async () => {
                       "use server";
-                      await logout();
+                      await logoutSession();
                     }}
                   >
                     <DropdownMenuItem asChild>

@@ -1,34 +1,68 @@
 const baseUrl = "http://localhost:8000";
 
-interface LoginData {
+export type LoginType = {
   email: string;
   password: string;
-}
+};
 
-interface RegisterData {
+export type LoginResponse = {
+  message: string;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type RegisterType = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   whatsapp: string;
-}
+};
 
-interface UpdateUserData {
+export type UserType = {
+  role: string;
+  provider: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  whatsapp: string;
+  verified: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UpdateUserType = {
   firstName?: string;
   lastName?: string;
-}
+  password?: string;
+  whatsapp: string;
+};
+
+// Funções de Autenticação Google
+export const initiateGoogleAuth = () => {
+  window.location.href = `${baseUrl}/auth/google`;
+};
 
 // Funções de Autenticação
-export const login = async (data: LoginData) => {
+export const fetchLogin = async (data: LoginType) => {
   const response = await fetch(`${baseUrl}/auth/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message);
+  }
+
   return await response.json();
 };
 
-export const register = async (data: RegisterData) => {
+export const fetchRegister = async (data: RegisterType) => {
   const response = await fetch(`${baseUrl}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -37,7 +71,7 @@ export const register = async (data: RegisterData) => {
   return await response.json();
 };
 
-export const verify = async (verificationToken: string) => {
+export const fetchVerify = async (verificationToken: string) => {
   const response = await fetch(`${baseUrl}/auth/verify`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -46,7 +80,7 @@ export const verify = async (verificationToken: string) => {
   return await response.json();
 };
 
-export const refresh = async (refreshToken: string) => {
+export const fetchRefresh = async (refreshToken: string) => {
   const response = await fetch(`${baseUrl}/auth/refresh`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -55,8 +89,8 @@ export const refresh = async (refreshToken: string) => {
   return await response.json();
 };
 
-export const resetPassword = async (email: string) => {
-  const response = await fetch(`${baseUrl}/auth/reset-password`, {
+export const fetchResetPwd = async (email: string) => {
+  const response = await fetch(`${baseUrl}/auth/reset-pwd`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
@@ -64,11 +98,11 @@ export const resetPassword = async (email: string) => {
   return await response.json();
 };
 
-export const resetPasswordConfirm = async (
+export const fetchResetPwdConfirm = async (
   resetToken: string,
   newPassword: string
 ) => {
-  const response = await fetch(`${baseUrl}/auth/reset-password/confirm`, {
+  const response = await fetch(`${baseUrl}/auth/reset-pwd/confirm`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ resetToken, newPassword }),
@@ -76,8 +110,15 @@ export const resetPasswordConfirm = async (
   return await response.json();
 };
 
+export const handleGoogleCallback = async (
+  accessToken: string,
+  refreshToken: string
+) => {
+  return { accessToken, refreshToken };
+};
+
 // Funções de Usuário
-export const getProfile = async (accessToken: string) => {
+export const fetchGetProfile = async (accessToken: string) => {
   const response = await fetch(`${baseUrl}/users/profile`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -86,9 +127,9 @@ export const getProfile = async (accessToken: string) => {
   return await response.json();
 };
 
-export const updateProfile = async (
+export const fetchUpdateProfile = async (
   accessToken: string,
-  data: UpdateUserData
+  data: UpdateUserType
 ) => {
   const response = await fetch(`${baseUrl}/users/profile`, {
     method: "PATCH",
@@ -101,7 +142,7 @@ export const updateProfile = async (
   return await response.json();
 };
 
-export const deleteProfile = async (accessToken: string) => {
+export const fetchDeleteProfile = async (accessToken: string) => {
   const response = await fetch(`${baseUrl}/users/profile`, {
     method: "DELETE",
     headers: {
@@ -112,7 +153,7 @@ export const deleteProfile = async (accessToken: string) => {
 };
 
 // Funções de Usuários (Admin)
-export const getAllUsers = async (accessToken: string) => {
+export const fetchGetAllUsers = async (accessToken: string) => {
   const response = await fetch(`${baseUrl}/users`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -121,7 +162,7 @@ export const getAllUsers = async (accessToken: string) => {
   return await response.json();
 };
 
-export const getUserById = async (accessToken: string, id: number) => {
+export const fetchGetUserById = async (accessToken: string, id: number) => {
   const response = await fetch(`${baseUrl}/users/${id}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -130,10 +171,10 @@ export const getUserById = async (accessToken: string, id: number) => {
   return await response.json();
 };
 
-export const updateUserById = async (
+export const fetchUpdateUserById = async (
   accessToken: string,
   id: number,
-  data: UpdateUserData
+  data: UpdateUserType
 ) => {
   const response = await fetch(`${baseUrl}/users/${id}`, {
     method: "PATCH",
@@ -146,7 +187,7 @@ export const updateUserById = async (
   return await response.json();
 };
 
-export const deleteUserById = async (accessToken: string, id: number) => {
+export const fetchDeleteUserById = async (accessToken: string, id: number) => {
   const response = await fetch(`${baseUrl}/users/${id}`, {
     method: "DELETE",
     headers: {

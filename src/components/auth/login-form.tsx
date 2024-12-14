@@ -7,8 +7,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-
-import { login } from "@/auth/session/auth-session";
+import { loginSession } from "@/auth/session/auth-session-rest";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,9 +24,9 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      const response = await login(formData);
+      const response = await loginSession(formData);
 
-      if (response.accessToken) {
+      if (response.message) {
         toast({
           title: "Sucesso!",
           description: response.message,
@@ -54,55 +53,59 @@ export function LoginForm() {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="exemplo@gmail.com"
-          required
-          value={formData.email}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">Senha</Label>
-        <div className="relative">
+    <div className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
           <Input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="******"
+            id="email"
+            type="email"
+            placeholder="exemplo@gmail.com"
             required
-            value={formData.password}
+            value={formData.email}
             onChange={handleChange}
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2"
-          >
-            {showPassword ? (
-              <EyeOff className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <Eye className="h-5 w-5 text-muted-foreground" />
-            )}
-          </button>
         </div>
-      </div>
-      <div>
-        <Link
-          href="/esqueceu"
-          className="text-sm text-blue-600 hover:underline"
-        >
-          Esqueceu a senha?
-        </Link>
-      </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Senha</Label>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="******"
+              required
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5 text-muted-foreground" />
+              ) : (
+                <Eye className="h-5 w-5 text-muted-foreground" />
+              )}
+            </button>
+          </div>
+        </div>
+        <div>
+          <Link
+            href="/esqueceu"
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Esqueceu a senha?
+          </Link>
+        </div>
 
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Entrando..." : "Entrar"}
-      </Button>
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Entrando..." : "Entrar"}
+        </Button>
+      </form>
+
       <GoogleButton />
+
       <div className="text-center space-y-2">
         <p className="text-sm">
           Não tem uma conta?{" "}
@@ -111,6 +114,6 @@ export function LoginForm() {
           </Link>
         </p>
       </div>
-    </form>
+    </div>
   );
 }
