@@ -38,4 +38,9 @@ export type UpdateUserType = {
   whatsapp: string;
 };
 
+export type SessionType = {
+  isAuthenticated: boolean;
+  user?: UserType;
+};
+
 export * from "./auth.types";

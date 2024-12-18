@@ -4,7 +4,7 @@ export const PROTECTED_ROUTES = {
   seguindo: "/seguindo",
   curtidas: "/curtidas",
   perfil: "/perfil",
-  configuracoes: "/configuracoes",
+  settings: "/settings",
 };
 
 export const PUBLIC_ROUTES = {
@@ -14,7 +14,7 @@ export const PUBLIC_ROUTES = {
 
 export const AUTH_ROUTES = {
   login: "/entrar",
-  registro: "/registro",
+  cadastro: "/cadastro",
   callback: "/callback",
 };
 

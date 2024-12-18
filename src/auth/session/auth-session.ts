@@ -1,32 +1,29 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { createHash } from "crypto";
 import * as jose from "jose";
 import { redirect } from "next/navigation";
 import { getErrorMessage } from "../utils/error-handler";
-import { NextResponse, type NextRequest } from "next/server";
 import * as AuthTypes from "@/auth/types/auth.types";
 import { fetchLogin, fetchRefresh } from "../fetch/fetch-client";
+import { NextRequest, NextResponse } from "next/server";
 
-const JWT_KEY = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
-const REFRESH_KEY = new TextEncoder().encode(process.env.REFRESH_SECRET_KEY);
+const JWT_KEY = process.env.JWT_SECRET_KEY as string;
+const REFRESH_KEY = process.env.REFRESH_SECRET_KEY as string;
 
-async function decryptJWT(token: string, secret: Uint8Array) {
-  try {
-    const key = createHash("sha256").update(secret).digest();
-    return await jose.jwtDecrypt(token, key, {
-      clockTolerance: 60,
-    });
-  } catch (error: any) {
-    if (error.code === "ERR_JWT_EXPIRED") {
-      throw new Error("Token expirado");
-    }
-    if (error.code === "ERR_JWT_CLAIM_VALIDATION_FAILED") {
-      throw new Error("Falha na validação do token");
-    }
-    throw error;
-  }
+function generateKey(secret: string): Uint8Array {
+  const encoder = new TextEncoder();
+  const keyBytes = encoder.encode(secret);
+  const buffer = new Uint8Array(32);
+  buffer.set(keyBytes.slice(0, 32));
+  return buffer;
+}
+
+async function decryptJWT(token: string, secret: string) {
+  const key = generateKey(secret);
+  return await jose.jwtDecrypt(token, key, {
+    clockTolerance: 1,
+  });
 }
 
 export async function loginSession(
@@ -51,35 +48,37 @@ export async function loginSession(
 
     await getSession();
     return await fetchLogin(credentials);
-  } catch (error: unknown) {
+  } catch (error: any) {
     throw new Error(getErrorMessage(error));
   }
 }
 
-export async function getSession(): Promise<AuthTypes.UserType | null> {
+export async function getSession(): Promise<AuthTypes.SessionType> {
   const accessToken = cookies().get("accessToken")?.value;
-  const isAccessValid = await isValidAcessToken();
 
-  if (!accessToken || !isAccessValid) {
-    return null;
+  if (!accessToken) {
+    return { isAuthenticated: false };
   }
 
   try {
     const { payload } = await decryptJWT(accessToken, JWT_KEY);
     return {
-      role: String(payload.role),
-      provider: String(payload.provider),
-      id: Number(payload.sub),
-      firstName: String(payload.firstName),
-      lastName: String(payload.lastName),
-      email: String(payload.email),
-      whatsapp: String(payload.whatsapp),
-      verified: Boolean(payload.verified),
-      createdAt: String(payload.createdAt),
-      updatedAt: String(payload.updatedAt),
+      isAuthenticated: true,
+      user: {
+        role: String(payload.role),
+        provider: String(payload.provider),
+        id: Number(payload.sub),
+        firstName: String(payload.firstName),
+        lastName: String(payload.lastName),
+        email: String(payload.email),
+        whatsapp: String(payload.whatsapp),
+        verified: Boolean(payload.verified),
+        createdAt: String(payload.createdAt),
+        updatedAt: String(payload.updatedAt),
+      },
     };
-  } catch {
-    return null;
+  } catch (error) {
+    return { isAuthenticated: false };
   }
 }
 
@@ -89,63 +88,53 @@ export async function logoutSession() {
   redirect("/entrar");
 }
 
-export async function isValidAcessToken(): Promise<boolean> {
-  const accessToken = cookies().get("accessToken")?.value;
+export async function updateSession(request: NextRequest) {
+  const accessToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
 
-  if (!accessToken) {
-    return false;
+  if (!refreshToken || !accessToken) {
+    return clearTokens();
   }
 
   try {
-    const { payload } = await decryptJWT(accessToken, JWT_KEY);
-    const expirationTime = (payload.exp || 0) * 1000;
-    return Date.now() < expirationTime;
-  } catch {
-    return false;
-  }
-}
+    const accessTokenStatus = await verifyToken(accessToken, JWT_KEY);
+    if (accessTokenStatus.isValid) {
+      return NextResponse.next();
+    }
 
-export async function isValidRefreshToken(): Promise<boolean> {
-  const refreshToken = cookies().get("refreshToken")?.value;
+    const refreshTokenStatus = await verifyToken(refreshToken, REFRESH_KEY);
+    if (!refreshTokenStatus.isValid) {
+      return clearTokens();
+    }
 
-  if (!refreshToken) {
-    return false;
-  }
+    const newTokens = await fetchRefresh(refreshToken);
+    const response = NextResponse.next();
 
-  try {
-    const { payload } = await decryptJWT(refreshToken, REFRESH_KEY);
-    const expirationTime = (payload.exp || 0) * 1000;
-    return Date.now() < expirationTime;
-  } catch {
-    return false;
-  }
-}
-
-export async function refreshAccessToken(): Promise<string | null> {
-  const refreshToken = cookies().get("refreshToken")?.value;
-
-  if (!refreshToken) {
-    return null;
-  }
-
-  try {
-    const response = await fetchRefresh(refreshToken);
-    const { accessToken } = response;
-
-    cookies().set("accessToken", accessToken, {
+    response.cookies.set("accessToken", newTokens.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       path: "/",
     });
 
-    return accessToken;
+    return response;
   } catch (error) {
-    console.error("Erro ao atualizar o token:", error);
-    return null;
+    return clearTokens();
   }
 }
 
-export async function updateSession(request: NextRequest) {
-  return NextResponse.next();
+async function verifyToken(token: string, secret: string) {
+  try {
+    await decryptJWT(token, secret);
+    return { isValid: true };
+  } catch (error: any) {
+    return { isValid: false };
+  }
+}
+
+function clearTokens() {
+  const response = NextResponse.next();
+  response.cookies.set("accessToken", "", { expires: new Date(0) });
+  response.cookies.set("refreshToken", "", { expires: new Date(0) });
+  return response;
 }
