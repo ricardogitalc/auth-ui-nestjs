@@ -11,6 +11,10 @@ type GraphQLError = {
 };
 
 export function getErrorMessage(error: any): string {
+  if (error instanceof TypeError && error.message === "fetch failed") {
+    return "Não foi possível conectar ao servidor.";
+  }
+
   if (error.response?.errors) {
     const graphqlError = error.response.errors[0] as GraphQLError;
 
@@ -26,5 +30,9 @@ export function getErrorMessage(error: any): string {
     }
   }
 
-  return error.message || "Ocorreu um erro inesperado";
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return "Ocorreu um erro inesperado";
 }

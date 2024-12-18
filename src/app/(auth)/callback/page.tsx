@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getSession } from "@/auth/session/auth-session-rest";
+import { getSession } from "@/auth/session/auth-session";
 
 export default async function CallbackPage() {
   const session = await getSession();

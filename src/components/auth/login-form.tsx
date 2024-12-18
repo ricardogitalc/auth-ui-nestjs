@@ -7,7 +7,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { loginSession } from "@/auth/session/auth-session-rest";
+import { loginSession } from "@/auth/session/auth-session";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,19 +26,25 @@ export function LoginForm() {
     try {
       const response = await loginSession(formData);
 
-      if (response.message) {
+      if (response.ok) {
         toast({
-          title: "Sucesso!",
-          description: response.message,
+          title: "Sucesso",
           variant: "default",
+          description: response.message,
         });
         router.push("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: response.message,
+        });
       }
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Erro no login",
-        description: error.message || "Ocorreu um erro inesperado",
+        title: "Erro",
+        description: error.message,
       });
     } finally {
       setLoading(false);
@@ -93,7 +99,7 @@ export function LoginForm() {
         <div>
           <Link
             href="/esqueceu"
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
           >
             Esqueceu a senha?
           </Link>
@@ -109,7 +115,10 @@ export function LoginForm() {
       <div className="text-center space-y-2">
         <p className="text-sm">
           Não tem uma conta?{" "}
-          <Link href="/cadastrar" className="text-blue-600 hover:underline">
+          <Link
+            href="/cadastrar"
+            className="text-blue-600 dark:text-blue-500 hover:underline"
+          >
             Criar
           </Link>
         </p>

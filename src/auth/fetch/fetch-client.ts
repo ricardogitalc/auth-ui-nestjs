@@ -6,6 +6,7 @@ export type LoginType = {
 };
 
 export type LoginResponse = {
+  ok: boolean;
   message: string;
   accessToken: string;
   refreshToken: string;
@@ -54,12 +55,11 @@ export const fetchLogin = async (data: LoginType) => {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message);
-  }
-
-  return await response.json();
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchRegister = async (data: RegisterType) => {
@@ -68,7 +68,12 @@ export const fetchRegister = async (data: RegisterType) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchVerify = async (verificationToken: string) => {
@@ -77,7 +82,12 @@ export const fetchVerify = async (verificationToken: string) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ verificationToken }),
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchRefresh = async (refreshToken: string) => {
@@ -86,7 +96,12 @@ export const fetchRefresh = async (refreshToken: string) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refreshToken }),
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchResetPwd = async (email: string) => {
@@ -95,7 +110,12 @@ export const fetchResetPwd = async (email: string) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchResetPwdConfirm = async (
@@ -107,7 +127,12 @@ export const fetchResetPwdConfirm = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ resetToken, newPassword }),
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const handleGoogleCallback = async (
@@ -124,7 +149,12 @@ export const fetchGetProfile = async (accessToken: string) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchUpdateProfile = async (
@@ -139,7 +169,12 @@ export const fetchUpdateProfile = async (
     },
     body: JSON.stringify(data),
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchDeleteProfile = async (accessToken: string) => {
@@ -149,7 +184,12 @@ export const fetchDeleteProfile = async (accessToken: string) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 // Funções de Usuários (Admin)
@@ -159,7 +199,12 @@ export const fetchGetAllUsers = async (accessToken: string) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchGetUserById = async (accessToken: string, id: number) => {
@@ -168,7 +213,12 @@ export const fetchGetUserById = async (accessToken: string, id: number) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchUpdateUserById = async (
@@ -184,7 +234,12 @@ export const fetchUpdateUserById = async (
     },
     body: JSON.stringify(data),
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };
 
 export const fetchDeleteUserById = async (accessToken: string, id: number) => {
@@ -194,5 +249,10 @@ export const fetchDeleteUserById = async (accessToken: string, id: number) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  return await response.json();
+
+  const responseData = await response.json();
+  return {
+    ...responseData,
+    ok: response.ok,
+  };
 };

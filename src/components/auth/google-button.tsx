@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { FcGoogle } from "react-icons/fc";
-import { initiateGoogleAuth } from "../../auth/calls/fetch-calls";
+import { initiateGoogleAuth } from "@/auth/fetch/fetch-client";
 
 export function GoogleButton() {
   return (

@@ -20,7 +20,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { KeySquare } from "./key-square";
 import { ModeToggle } from "./theme/mode-toggle";
-import { getSession, logoutSession } from "@/auth/session/auth-session-rest";
+import { getSession, logoutSession } from "@/auth/session/auth-session";
 
 export default async function Navbar() {
   const session = await getSession();

@@ -129,7 +129,10 @@ export function RegisterForm() {
       <GoogleButton />
       <p className="text-center text-sm">
         Já possui uma conta?{" "}
-        <Link href="/entrar" className="text-blue-600 hover:underline">
+        <Link
+          href="/entrar"
+          className="text-blue-600 dark:text-blue-500 hover:underline"
+        >
           Entrar
         </Link>
       </p>
