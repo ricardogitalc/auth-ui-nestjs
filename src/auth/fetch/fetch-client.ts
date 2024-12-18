@@ -1,52 +1,12 @@
+import * as AuthTypes from "@/auth/types/auth.types";
+
 const baseUrl = "http://localhost:8000";
 
-export type LoginType = {
-  email: string;
-  password: string;
-};
-
-export type LoginResponse = {
-  ok: boolean;
-  message: string;
-  accessToken: string;
-  refreshToken: string;
-};
-
-export type RegisterType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  whatsapp: string;
-};
-
-export type UserType = {
-  role: string;
-  provider: string;
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  whatsapp: string;
-  verified: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type UpdateUserType = {
-  firstName?: string;
-  lastName?: string;
-  password?: string;
-  whatsapp: string;
-};
-
-// Funções de Autenticação Google
 export const initiateGoogleAuth = () => {
   window.location.href = `${baseUrl}/auth/google`;
 };
 
-// Funções de Autenticação
-export const fetchLogin = async (data: LoginType) => {
+export const fetchLogin = async (data: AuthTypes.LoginType) => {
   const response = await fetch(`${baseUrl}/auth/login`, {
     method: "POST",
     headers: {
@@ -62,7 +22,7 @@ export const fetchLogin = async (data: LoginType) => {
   };
 };
 
-export const fetchRegister = async (data: RegisterType) => {
+export const fetchRegister = async (data: AuthTypes.RegisterType) => {
   const response = await fetch(`${baseUrl}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -142,7 +102,6 @@ export const handleGoogleCallback = async (
   return { accessToken, refreshToken };
 };
 
-// Funções de Usuário
 export const fetchGetProfile = async (accessToken: string) => {
   const response = await fetch(`${baseUrl}/users/profile`, {
     headers: {
@@ -159,7 +118,7 @@ export const fetchGetProfile = async (accessToken: string) => {
 
 export const fetchUpdateProfile = async (
   accessToken: string,
-  data: UpdateUserType
+  data: AuthTypes.UpdateUserType
 ) => {
   const response = await fetch(`${baseUrl}/users/profile`, {
     method: "PATCH",
@@ -192,7 +151,6 @@ export const fetchDeleteProfile = async (accessToken: string) => {
   };
 };
 
-// Funções de Usuários (Admin)
 export const fetchGetAllUsers = async (accessToken: string) => {
   const response = await fetch(`${baseUrl}/users`, {
     headers: {
@@ -224,7 +182,7 @@ export const fetchGetUserById = async (accessToken: string, id: number) => {
 export const fetchUpdateUserById = async (
   accessToken: string,
   id: number,
-  data: UpdateUserType
+  data: AuthTypes.UpdateUserType
 ) => {
   const response = await fetch(`${baseUrl}/users/${id}`, {
     method: "PATCH",

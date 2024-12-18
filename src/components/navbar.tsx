@@ -22,6 +22,41 @@ import { KeySquare } from "./key-square";
 import { ModeToggle } from "./theme/mode-toggle";
 import { getSession, logoutSession } from "@/auth/session/auth-session";
 
+export const ROUTES = {
+  HOME: {
+    href: "/",
+    name: "Home",
+  },
+  DOWNLOADS: {
+    href: "/downloads",
+    name: "Downloads",
+  },
+  ASSINATURA: {
+    href: "/assinatura",
+    name: "Assinatura",
+  },
+  SEGUINDO: {
+    href: "/seguindo",
+    name: "Seguindo",
+  },
+  CURTIDAS: {
+    href: "/curtidas",
+    name: "Curtidas",
+  },
+  CONFIGURACOES: {
+    href: "/configuracoes",
+    name: "Configurações",
+  },
+  LOGIN: {
+    href: "/entrar",
+    name: "Entrar",
+  },
+  REGISTRO: {
+    href: "/registro",
+    name: "Registro",
+  },
+} as const;
+
 export default async function Navbar() {
   const session = await getSession();
 
@@ -30,7 +65,7 @@ export default async function Navbar() {
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href={ROUTES.HOME.href} className="flex items-center gap-2">
               <KeySquare className="w-6 h-6 text-foreground" />
             </Link>
           </div>
@@ -38,11 +73,11 @@ export default async function Navbar() {
             <ModeToggle />
             {!session ? (
               <>
-                <Link href="/entrar">
-                  <Button>Entrar</Button>
+                <Link href={ROUTES.LOGIN.href}>
+                  <Button>{ROUTES.LOGIN.name}</Button>
                 </Link>
-                <Link href="/cadastrar">
-                  <Button variant={"outline"}>Cadastrar</Button>
+                <Link href={ROUTES.REGISTRO.href}>
+                  <Button variant={"outline"}>{ROUTES.REGISTRO.name}</Button>
                 </Link>
               </>
             ) : (
@@ -72,34 +107,34 @@ export default async function Navbar() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuSeparator />
-                  <Link href="/">
+                  <Link href={ROUTES.CONFIGURACOES.href}>
                     <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />
-                      <span>Configurações</span>
+                      <span>{ROUTES.CONFIGURACOES.name}</span>
                     </DropdownMenuItem>
                   </Link>
-                  <Link href="/">
+                  <Link href={ROUTES.DOWNLOADS.href}>
                     <DropdownMenuItem>
                       <Download className="mr-2 h-4 w-4" />
-                      <span>Downloads</span>
+                      <span>{ROUTES.DOWNLOADS.name}</span>
                     </DropdownMenuItem>
                   </Link>
-                  <Link href="/">
+                  <Link href={ROUTES.CURTIDAS.href}>
                     <DropdownMenuItem>
                       <Heart className="mr-2 h-4 w-4" />
-                      <span>Curtidas</span>
+                      <span>{ROUTES.CURTIDAS.name}</span>
                     </DropdownMenuItem>
                   </Link>
-                  <Link href="/">
+                  <Link href={ROUTES.ASSINATURA.href}>
                     <DropdownMenuItem>
                       <CreditCard className="mr-2 h-4 w-4" />
-                      <span>Assinatura</span>
+                      <span>{ROUTES.ASSINATURA.name}</span>
                     </DropdownMenuItem>
                   </Link>
-                  <Link href="/">
+                  <Link href={ROUTES.SEGUINDO.href}>
                     <DropdownMenuItem>
                       <Users className="mr-2 h-4 w-4" />
-                      <span>Seguindo</span>
+                      <span>{ROUTES.SEGUINDO.name}</span>
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />

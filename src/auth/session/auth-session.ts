@@ -6,13 +6,8 @@ import * as jose from "jose";
 import { redirect } from "next/navigation";
 import { getErrorMessage } from "../utils/error-handler";
 import { NextResponse, type NextRequest } from "next/server";
-import {
-  fetchLogin,
-  fetchRefresh,
-  type LoginType,
-  type LoginResponse,
-  type UserType,
-} from "../fetch/fetch-client";
+import * as AuthTypes from "@/auth/types/auth.types";
+import { fetchLogin, fetchRefresh } from "../fetch/fetch-client";
 
 const JWT_KEY = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
 const REFRESH_KEY = new TextEncoder().encode(process.env.REFRESH_SECRET_KEY);
@@ -35,8 +30,8 @@ async function decryptJWT(token: string, secret: Uint8Array) {
 }
 
 export async function loginSession(
-  credentials: LoginType
-): Promise<LoginResponse> {
+  credentials: AuthTypes.LoginType
+): Promise<AuthTypes.LoginResponse> {
   try {
     const { accessToken, refreshToken } = await fetchLogin(credentials);
 
@@ -61,7 +56,7 @@ export async function loginSession(
   }
 }
 
-export async function getSession(): Promise<UserType | null> {
+export async function getSession(): Promise<AuthTypes.UserType | null> {
   const accessToken = cookies().get("accessToken")?.value;
   const isAccessValid = await isValidAcessToken();
 
