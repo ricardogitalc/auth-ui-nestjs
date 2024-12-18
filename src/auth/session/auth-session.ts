@@ -117,6 +117,13 @@ export async function updateSession(request: NextRequest) {
       path: "/",
     });
 
+    response.cookies.set("refreshToken", newTokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+
     return response;
   } catch (error) {
     return clearTokens();
