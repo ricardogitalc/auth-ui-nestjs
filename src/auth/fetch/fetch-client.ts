@@ -36,8 +36,8 @@ export const fetchRegister = async (data: AuthTypes.RegisterType) => {
   };
 };
 
-export const fetchVerify = async (verificationToken: string) => {
-  const response = await fetch(`${baseUrl}/auth/verify`, {
+export const fetchVerifyRegister = async (verificationToken: string) => {
+  const response = await fetch(`${baseUrl}/auth/verify-register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ verificationToken }),

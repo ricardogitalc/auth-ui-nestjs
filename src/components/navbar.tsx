@@ -77,7 +77,6 @@ export default async function Navbar() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuSeparator />
                   <Link href={DROP_ROUTES.CONFIGURACOES.href}>
                     <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />

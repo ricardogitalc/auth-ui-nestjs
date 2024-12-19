@@ -13,9 +13,12 @@ export const PUBLIC_ROUTES = {
 };
 
 export const AUTH_ROUTES = {
-  login: "/entrar",
-  cadastro: "/cadastro",
+  cadastrar: "/cadastrar",
   callback: "/callback",
+  entrar: "/entrar",
+  esqueceuSenha: "/esqueceu-senha",
+  redefinirSenha: "redefinir-senha",
+  verificarCadastro: "verificar-cadastro",
 };
 
 export const isProtectedRoute = (path: string) => {

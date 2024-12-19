@@ -4,16 +4,62 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
+import { fetchResetPwdConfirm } from "@/auth/fetch/fetch-client";
+import { useRouter } from "next/navigation";
 
-export function ResetPasswordForm() {
+interface ResetPasswordFormProps {
+  token: string;
+}
+
+export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const [showPasswords, setShowPasswords] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     newPassword: "",
+    confirmNewPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Reset Password Data:", formData);
+
+    if (formData.newPassword !== formData.confirmNewPassword) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "As senhas não coincidem",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetchResetPwdConfirm(token, formData.newPassword);
+
+      if (response.ok) {
+        toast({
+          title: "Sucesso",
+          description: response.message,
+        });
+        router.push("/entrar");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: response.message,
+        });
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +103,7 @@ export function ResetPasswordForm() {
             type={showPasswords ? "text" : "password"}
             placeholder="******"
             required
+            value={formData.confirmNewPassword}
             onChange={handleChange}
           />
           <button
@@ -72,8 +119,8 @@ export function ResetPasswordForm() {
           </button>
         </div>
       </div>
-      <Button type="submit" className="w-full">
-        Salvar senha
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? "Salvando..." : "Salvar senha"}
       </Button>
       <p className="text-center text-sm">
         Entrar na sua conta?{" "}

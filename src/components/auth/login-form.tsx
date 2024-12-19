@@ -96,15 +96,12 @@ export function LoginForm() {
             </button>
           </div>
         </div>
-        <div>
-          <Link
-            href="/esqueceu"
-            className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            Esqueceu a senha?
-          </Link>
-        </div>
-
+        <Link
+          href="/esqueceu-senha"
+          className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+        >
+          Esqueceu a senha?
+        </Link>
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "Entrando..." : "Entrar"}
         </Button>
@@ -119,7 +116,7 @@ export function LoginForm() {
             href="/cadastrar"
             className="text-blue-600 dark:text-blue-500 hover:underline"
           >
-            Criar
+            Cadastrar
           </Link>
         </p>
       </div>

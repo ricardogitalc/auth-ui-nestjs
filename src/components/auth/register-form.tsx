@@ -5,9 +5,13 @@ import { GoogleButton } from "./google-button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
+import { fetchRegister } from "@/auth/fetch/fetch-client";
 
 export function RegisterForm() {
   const [showPasswords, setShowPasswords] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,17 +19,60 @@ export function RegisterForm() {
     password: "",
     whatsapp: "",
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Register Data:", formData);
+
+    if (formData.password !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "As senhas não coincidem",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetchRegister(formData);
+
+      if (response.ok) {
+        toast({
+          title: "Sucesso",
+          variant: "default",
+          description: response.message || "Cadastro realizado com sucesso!",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: response.message || "Erro ao realizar cadastro",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: error.message || "Erro ao realizar cadastro",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
+    const { id, value } = e.target;
+
+    if (id === "confirmPassword") {
+      setConfirmPassword(value);
+    } else {
+      setFormData({
+        ...formData,
+        [id]: value,
+      });
+    }
   };
 
   return (
@@ -96,6 +143,7 @@ export function RegisterForm() {
               type={showPasswords ? "text" : "password"}
               placeholder="******"
               required
+              value={confirmPassword}
               onChange={handleChange}
             />
             <button
@@ -122,8 +170,8 @@ export function RegisterForm() {
             onChange={handleChange}
           />
         </div>
-        <Button type="submit" className="w-full">
-          Criar conta
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Criando conta..." : "Criar conta"}
         </Button>
       </form>
       <GoogleButton />

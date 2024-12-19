@@ -1,8 +1,24 @@
 import type { NextRequest } from "next/server";
-import { updateSession } from "@/auth/session/auth-session";
+import { NextResponse } from "next/server";
+import { getSession, updateSession } from "@/auth/session/auth-session";
+import { isAuthRoute, isProtectedRoute } from "./routes/routes";
+import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  const response = await updateSession(request);
+  const isAuthenticated = cookies().get("accessToken")?.value;
+  // const { isAuthenticated } = await getSession();
+  const path = request.nextUrl.pathname;
+
+  if (isAuthenticated && isAuthRoute(path)) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (!isAuthenticated && isProtectedRoute(path)) {
+    return NextResponse.redirect(new URL("/entrar", request.url));
+  }
+
+  return response;
 }
 
 export const config = {

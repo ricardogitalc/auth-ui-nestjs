@@ -11,9 +11,7 @@ export function GoogleButton() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-4 text-muted-foreground">
-            Ou continue com
-          </span>
+          <span className="bg-background px-4 text-muted-foreground">OU</span>
         </div>
       </div>
       <Button
@@ -22,7 +20,7 @@ export function GoogleButton() {
         className="w-full bg-muted-foreground/5 hover:bg-muted-foreground/15"
       >
         <FcGoogle className="h-5 w-5" />
-        Google
+        Continue com Google
       </Button>
     </>
   );
