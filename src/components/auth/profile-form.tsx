@@ -7,7 +7,7 @@ export default async function ProfileForm() {
   const { isAuthenticated, user } = await getSession();
 
   return (
-    <Card className="border-0 shadow-none max-w-2xl w-full">
+    <Card className="max-w-xl w-full p-8">
       <CardHeader className="space-y-4 px-0">
         <div className="flex justify-start">
           <Image

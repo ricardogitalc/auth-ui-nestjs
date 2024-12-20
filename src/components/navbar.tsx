@@ -22,12 +22,13 @@ import { KeySquare } from "./key-square";
 import { ModeToggle } from "./theme/mode-toggle";
 import { getSession, logoutSession } from "@/auth/session/auth-session";
 import { DROP_ROUTES } from "@/constants/dropdown-routes";
+import LogoTipo from "@/svg/logotipo";
 
 export default async function Navbar() {
   const { isAuthenticated, user } = await getSession();
 
   return (
-    <header className="w-full bg-muted-foreground/5">
+    <header className="w-full bg-popover border-b border-border">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
@@ -35,7 +36,7 @@ export default async function Navbar() {
               href={DROP_ROUTES.HOME.href}
               className="flex items-center gap-2"
             >
-              <KeySquare className="w-6 h-6 text-foreground" />
+              <LogoTipo className="w-32 h-8 fill-foreground" />
             </Link>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwdConfirm } from "@/auth/fetch/fetch-client";
 import { useRouter } from "next/navigation";
+import { Card, CardContent } from "../ui/card";
+import { AuthHeader } from "./auth-header";
 
 interface ResetPasswordFormProps {
   token: string;
@@ -70,64 +72,72 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <div className="space-y-2">
-        <Label htmlFor="newPassword">Nova senha</Label>
-        <div className="relative">
-          <Input
-            id="newPassword"
-            type={showPasswords ? "text" : "password"}
-            placeholder="******"
-            required
-            value={formData.newPassword}
-            onChange={handleChange}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPasswords(!showPasswords)}
-            className="absolute right-3 top-1/2 -translate-y-1/2"
-          >
-            {showPasswords ? (
-              <EyeOff className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <Eye className="h-5 w-5 text-muted-foreground" />
-            )}
-          </button>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="confirmNewPassword">Confirmar nova senha</Label>
-        <div className="relative">
-          <Input
-            id="confirmNewPassword"
-            type={showPasswords ? "text" : "password"}
-            placeholder="******"
-            required
-            value={formData.confirmNewPassword}
-            onChange={handleChange}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPasswords(!showPasswords)}
-            className="absolute right-3 top-1/2 -translate-y-1/2"
-          >
-            {showPasswords ? (
-              <EyeOff className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <Eye className="h-5 w-5 text-muted-foreground" />
-            )}
-          </button>
-        </div>
-      </div>
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Salvando..." : "Salvar senha"}
-      </Button>
-      <p className="text-center text-sm">
-        Entrar na sua conta?{" "}
-        <Link href="/entrar" className="text-blue-600 hover:underline">
-          Entrar
-        </Link>
-      </p>
-    </form>
+    <Card className="w-full max-w-[400px] mx-auto">
+      <AuthHeader
+        title="Definir nova senha"
+        description="Digite sua nova senha"
+      />
+      <CardContent className="space-y-6">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="space-y-2">
+            <div className="relative">
+              <Input
+                id="newPassword"
+                type={showPasswords ? "text" : "password"}
+                placeholder="******"
+                required
+                value={formData.newPassword}
+                onChange={handleChange}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswords(!showPasswords)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                {showPasswords ? (
+                  <EyeOff className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-5 w-5 text-muted-foreground" />
+                )}
+              </button>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="relative">
+              <Input
+                id="confirmNewPassword"
+                type={showPasswords ? "text" : "password"}
+                placeholder="******"
+                required
+                value={formData.confirmNewPassword}
+                onChange={handleChange}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswords(!showPasswords)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                {showPasswords ? (
+                  <EyeOff className="h-5 w-5 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-5 w-5 text-muted-foreground" />
+                )}
+              </button>
+            </div>
+          </div>
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Salvando..." : "Salvar senha"}
+          </Button>
+          <div className="text-center text-sm text-muted-foreground">
+            <Link
+              href="/entrar"
+              className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              Entrar na conta
+            </Link>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

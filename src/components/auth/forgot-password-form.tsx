@@ -5,6 +5,8 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwd } from "@/auth/fetch/fetch-client";
+import { Card, CardContent } from "../ui/card";
+import { AuthHeader } from "./auth-header";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -43,27 +45,36 @@ export function ForgotPasswordForm() {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="exemplo@gmail.com"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Enviando..." : "Redefinir senha"}
-      </Button>
-      <p className="text-center text-sm">
-        Lembra sua senha?{" "}
-        <Link href="/entrar" className="text-blue-600 hover:underline">
-          Entrar
-        </Link>
-      </p>
-    </form>
+    <Card className="w-full max-w-[400px] mx-auto">
+      <AuthHeader
+        title="Redefinir senha"
+        description="Digite seu email para redefinir sua senha"
+      />
+      <CardContent className="space-y-6">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="space-y-2">
+            <Input
+              id="email"
+              type="email"
+              placeholder="exemplo@gmail.com"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Enviando..." : "Redefinir senha"}
+          </Button>
+          <div className="text-center text-sm text-muted-foreground">
+            <Link
+              href="/entrar"
+              className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              Entrar na conta
+            </Link>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
