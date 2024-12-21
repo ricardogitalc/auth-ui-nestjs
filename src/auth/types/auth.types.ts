@@ -15,28 +15,46 @@ export type RegisterType = {
   lastName: string;
   email: string;
   password: string;
-  whatsapp: string;
+  phone: string;
 };
 
+export enum Role {
+  USER = "USER",
+  ADMIN = "ADMIN",
+}
+
+export enum Provider {
+  CREDENTIALS = "CREDENTIALS",
+  GOOGLE = "GOOGLE",
+}
+
 export type UserType = {
-  role: string;
-  provider: string;
+  role: Role;
+  provider: Provider;
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  whatsapp?: string;
+  password?: string;
   profileUrl?: string;
+  phone?: string;
+  cpf?: String;
+  zipCode?: String;
+  city?: String;
+  state?: String;
+  anddress?: String;
+  district?: String;
+  number?: String;
   verified: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type UpdateUserType = {
   firstName?: string;
   lastName?: string;
   password?: string;
-  whatsapp?: string;
+  phone?: string;
   profileUrl?: string;
 };
 

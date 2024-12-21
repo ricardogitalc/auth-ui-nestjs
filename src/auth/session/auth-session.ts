@@ -34,7 +34,8 @@ export async function loginSession(
   credentials: AuthTypes.LoginType
 ): Promise<AuthTypes.LoginResponse> {
   try {
-    const { accessToken, refreshToken } = await fetchLogin(credentials);
+    const response = await fetchLogin(credentials);
+    const { accessToken, refreshToken } = response;
 
     cookies().set("accessToken", accessToken, {
       httpOnly: true,
@@ -50,8 +51,7 @@ export async function loginSession(
       path: "/",
     });
 
-    await getSession();
-    return await fetchLogin(credentials);
+    return response;
   } catch (error: any) {
     throw new Error(getErrorMessage(error));
   }
@@ -79,7 +79,7 @@ export async function getSession(): Promise<AuthTypes.SessionType> {
         email: response.email,
         role: response.role,
         provider: response.provider,
-        whatsapp: response.whatsapp,
+        phone: response.phone,
         profileUrl: response.profileUrl,
         verified: response.verified,
         createdAt: response.createdAt,

@@ -20,7 +20,7 @@ export function RegisterForm() {
     lastName: "",
     email: "",
     password: "",
-    whatsapp: "",
+    phone: "",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -188,11 +188,11 @@ export function RegisterForm() {
             <div className="relative">
               <GoogleInput
                 // icon={Phone}
-                id="whatsapp"
+                id="phone"
                 type="tel"
-                placeholder="Whatsapp"
+                placeholder="Telefone"
                 required
-                value={formData.whatsapp}
+                value={formData.phone}
                 onChange={handleChange}
                 className="pl-10"
               />

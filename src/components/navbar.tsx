@@ -1,3 +1,5 @@
+"use client";
+
 import {
   User,
   Download,
@@ -18,15 +20,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { KeySquare } from "./key-square";
 import { ModeToggle } from "./theme/mode-toggle";
-import { getSession, logoutSession } from "@/auth/session/auth-session";
+import { useSession } from "@/contexts/SessionContext";
 import { DROP_ROUTES } from "@/constants/dropdown-routes";
 import LogoTipo from "@/svg/logotipo";
 import Image from "next/image";
+import { handleLogout } from "@/actions/auth-actions";
 
-export default async function Navbar() {
-  const { isAuthenticated, user } = await getSession();
+export default function Navbar() {
+  const { isAuthenticated, user } = useSession();
 
   return (
     <header className="w-full bg-popover border-b border-border">
@@ -114,12 +116,7 @@ export default async function Navbar() {
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
-                  <form
-                    action={async () => {
-                      "use server";
-                      await logoutSession();
-                    }}
-                  >
+                  <form action={handleLogout}>
                     <DropdownMenuItem asChild>
                       <button className="w-full flex cursor-pointer items-center">
                         <LogOutIcon className="mr-2 h-4 w-4 text-red-500" />

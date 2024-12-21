@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { getSession, updateSession } from "@/auth/session/auth-session";
+import { updateSession } from "@/auth/session/auth-session";
 import { isAuthRoute, isProtectedRoute } from "./routes/routes";
 import { cookies } from "next/headers";
 
