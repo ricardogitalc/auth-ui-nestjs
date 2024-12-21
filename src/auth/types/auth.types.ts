@@ -25,7 +25,8 @@ export type UserType = {
   firstName: string;
   lastName: string;
   email: string;
-  whatsapp: string;
+  whatsapp?: string;
+  profileUrl?: string;
   verified: boolean;
   createdAt: string;
   updatedAt: string;
@@ -35,7 +36,8 @@ export type UpdateUserType = {
   firstName?: string;
   lastName?: string;
   password?: string;
-  whatsapp: string;
+  whatsapp?: string;
+  profileUrl?: string;
 };
 
 export type SessionType = {

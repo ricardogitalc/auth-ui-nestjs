@@ -1,14 +1,15 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Loader } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwdConfirm } from "@/auth/fetch/fetch-client";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
+import { GoogleInput } from "../google-input";
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 interface ResetPasswordFormProps {
   token: string;
@@ -38,6 +39,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 
     setLoading(true);
     try {
+      await delay(500);
       const response = await fetchResetPwdConfirm(token, formData.newPassword);
 
       if (response.ok) {
@@ -45,7 +47,6 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
           title: "Sucesso",
           description: response.message,
         });
-        router.push("/entrar");
       } else {
         toast({
           variant: "destructive",
@@ -75,19 +76,21 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
     <Card className="w-full max-w-[400px] mx-auto">
       <AuthHeader
         title="Definir nova senha"
-        description="Digite sua nova senha"
+        description="Defina sua nova senha abaixo."
       />
       <CardContent className="space-y-6">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <div className="relative">
-              <Input
+              <GoogleInput
+                icon={KeyRound}
                 id="newPassword"
                 type={showPasswords ? "text" : "password"}
-                placeholder="******"
+                placeholder="Nova senha"
                 required
                 value={formData.newPassword}
                 onChange={handleChange}
+                className="pl-10"
               />
               <button
                 type="button"
@@ -104,13 +107,15 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
           </div>
           <div className="space-y-2">
             <div className="relative">
-              <Input
+              <GoogleInput
+                icon={KeyRound}
                 id="confirmNewPassword"
                 type={showPasswords ? "text" : "password"}
-                placeholder="******"
+                placeholder="Confirmar senha"
                 required
                 value={formData.confirmNewPassword}
                 onChange={handleChange}
+                className="pl-10"
               />
               <button
                 type="button"
@@ -126,16 +131,17 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Salvando..." : "Salvar senha"}
+            {loading ? (
+              <Loader className="animate-spin ml-4" />
+            ) : (
+              "Definir nova senha"
+            )}
           </Button>
-          <div className="text-center text-sm text-muted-foreground">
-            <Link
-              href="/entrar"
-              className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              Entrar na conta
-            </Link>
-          </div>
+          <Link href={"/entrar"}>
+            <Button variant="outline" className="w-full mt-4">
+              Voltar
+            </Button>
+          </Link>
         </form>
       </CardContent>
     </Card>

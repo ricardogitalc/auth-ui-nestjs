@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { cn } from "@/lib/utils";
@@ -7,10 +7,10 @@ import Navbar from "@/components/navbar";
 
 import "./globals.css";
 
-const IBMPlex = IBM_Plex_Sans({
+const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-ibm-plex",
+  variable: "--font-open-sans",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={cn("font-IBMPlex antialiased", IBMPlex.variable)}>
+      <body className={cn("font-openSans antialiased", openSans.variable)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

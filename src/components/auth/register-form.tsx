@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { GoogleButton } from "./google-button";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, User, Mail, KeyRound, Phone, Loader } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { fetchRegister } from "@/auth/fetch/fetch-client";
 import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
+import { GoogleInput } from "../google-input";
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function RegisterForm() {
   const [showPasswords, setShowPasswords] = useState(false);
@@ -38,6 +39,7 @@ export function RegisterForm() {
     setLoading(true);
 
     try {
+      await delay(500);
       const response = await fetchRegister(formData);
 
       if (response.ok) {
@@ -87,43 +89,87 @@ export function RegisterForm() {
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Input
-                id="firstName"
-                placeholder="Nome"
-                required
-                value={formData.firstName}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <GoogleInput
+                  // icon={User}
+                  id="firstName"
+                  placeholder="Nome"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="pl-10"
+                />
+              </div>
             </div>
             <div className="space-y-2">
-              <Input
-                id="lastName"
-                placeholder="Sobrenome"
-                required
-                value={formData.lastName}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <GoogleInput
+                  id="lastName"
+                  placeholder="Sobrenome"
+                  required
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
-          </div>
-          <div className="space-y-2">
-            <Input
-              id="email"
-              type="email"
-              placeholder="Email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
           </div>
           <div className="space-y-2">
             <div className="relative">
-              <Input
+              <GoogleInput
+                // icon={Mail}
+                id="email"
+                type="email"
+                placeholder="Email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="pl-10"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="relative">
+              <GoogleInput
+                // icon={KeyRound}
                 id="password"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Senha"
                 required
                 value={formData.password}
                 onChange={handleChange}
+                className="pl-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswords(!showPasswords)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                {showPasswords ? (
+                  <EyeOff
+                    className="h-5 w-5 text-muted-foreground"
+                    strokeWidth={2.3}
+                  />
+                ) : (
+                  <Eye
+                    className="h-5 w-5 text-muted-foreground"
+                    strokeWidth={2.3}
+                  />
+                )}
+              </button>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="relative">
+              <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <GoogleInput
+                // icon={KeyRound}
+                id="confirmPassword"
+                type={showPasswords ? "text" : "password"}
+                placeholder="Confirmar senha"
+                required
+                value={confirmPassword}
+                onChange={handleChange}
+                className="pl-10"
               />
               <button
                 type="button"
@@ -140,39 +186,20 @@ export function RegisterForm() {
           </div>
           <div className="space-y-2">
             <div className="relative">
-              <Input
-                id="confirmPassword"
-                type={showPasswords ? "text" : "password"}
-                placeholder="Confirmar senha"
+              <GoogleInput
+                // icon={Phone}
+                id="whatsapp"
+                type="tel"
+                placeholder="Whatsapp"
                 required
-                value={confirmPassword}
+                value={formData.whatsapp}
                 onChange={handleChange}
+                className="pl-10"
               />
-              <button
-                type="button"
-                onClick={() => setShowPasswords(!showPasswords)}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
-                {showPasswords ? (
-                  <EyeOff className="h-5 w-5 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-5 w-5 text-muted-foreground" />
-                )}
-              </button>
             </div>
           </div>
-          <div className="space-y-2">
-            <Input
-              id="whatsapp"
-              type="tel"
-              placeholder="Whatsapp"
-              required
-              value={formData.whatsapp}
-              onChange={handleChange}
-            />
-          </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Criando conta..." : "Criar conta"}
+            {loading ? <Loader className="animate-spin ml-4" /> : "Criar conta"}
           </Button>
         </form>
         <GoogleButton />

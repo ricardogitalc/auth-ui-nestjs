@@ -8,9 +8,9 @@ interface AuthHeaderProps {
 
 export function AuthHeader({ title, description }: AuthHeaderProps) {
   return (
-    <CardHeader className="space-y-6 mt-4">
+    <CardHeader className="space-y-4 my-4">
       <div className="flex justify-center items-center">
-        <LogoTipoNoText className="w-12 h-12" />
+        <LogoTipoNoText className="w-8 h-8" />
       </div>
       <div className="text-center">
         <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>

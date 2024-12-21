@@ -1,15 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { GoogleButton } from "./google-button";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, User, KeyRound, Loader } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { loginSession } from "@/auth/session/auth-session";
 import { AuthHeader } from "./auth-header";
+import { GoogleInput } from "@/components/google-input";
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,6 +27,7 @@ export function LoginForm() {
     setLoading(true);
 
     try {
+      await delay(500);
       const response = await loginSession(formData);
 
       if (response.ok) {
@@ -63,30 +65,32 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-[400px] mx-auto">
       <AuthHeader
-        title="Entre na sua conta"
+        title="Bem vindo de volta"
         description="Entre com sua conta para continuar"
       />
       <CardContent className="space-y-6">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <Input
+            <GoogleInput
               id="email"
               type="email"
               placeholder="Email"
               required
               value={formData.email}
               onChange={handleChange}
+              icon={User}
             />
           </div>
           <div className="space-y-2">
             <div className="relative">
-              <Input
+              <GoogleInput
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Senha"
                 required
                 value={formData.password}
                 onChange={handleChange}
+                icon={KeyRound}
               />
               <button
                 type="button"
@@ -94,9 +98,15 @@ export function LoginForm() {
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-muted-foreground" />
+                  <EyeOff
+                    className="h-5 w-5 text-muted-foreground"
+                    strokeWidth={2.3}
+                  />
                 ) : (
-                  <Eye className="h-5 w-5 text-muted-foreground" />
+                  <Eye
+                    className="h-5 w-5 text-muted-foreground"
+                    strokeWidth={2.3}
+                  />
                 )}
               </button>
             </div>
@@ -110,7 +120,11 @@ export function LoginForm() {
             </Link>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? (
+              <Loader className="animate-spin ml-4" strokeWidth={1.5} />
+            ) : (
+              "Entrar"
+            )}
           </Button>
         </form>
         <GoogleButton />

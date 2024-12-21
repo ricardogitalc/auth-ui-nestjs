@@ -5,7 +5,11 @@ import * as jose from "jose";
 import { redirect } from "next/navigation";
 import { getErrorMessage } from "../utils/error-handler";
 import * as AuthTypes from "@/auth/types/auth.types";
-import { fetchLogin, fetchRefresh } from "../fetch/fetch-client";
+import {
+  fetchLogin,
+  fetchRefresh,
+  fetchGetProfile,
+} from "../fetch/fetch-client";
 import { NextRequest, NextResponse } from "next/server";
 
 const JWT_KEY = process.env.JWT_SECRET_KEY as string;
@@ -61,20 +65,25 @@ export async function getSession(): Promise<AuthTypes.SessionType> {
   }
 
   try {
-    const { payload } = await decryptJWT(accessToken, JWT_KEY);
+    const response = await fetchGetProfile(accessToken);
+    if (!response.ok) {
+      return { isAuthenticated: false };
+    }
+
     return {
       isAuthenticated: true,
       user: {
-        role: String(payload.role),
-        provider: String(payload.provider),
-        id: Number(payload.sub),
-        firstName: String(payload.firstName),
-        lastName: String(payload.lastName),
-        email: String(payload.email),
-        whatsapp: String(payload.whatsapp),
-        verified: Boolean(payload.verified),
-        createdAt: String(payload.createdAt),
-        updatedAt: String(payload.updatedAt),
+        id: response.id,
+        firstName: response.firstName,
+        lastName: response.lastName,
+        email: response.email,
+        role: response.role,
+        provider: response.provider,
+        whatsapp: response.whatsapp,
+        profileUrl: response.profileUrl,
+        verified: response.verified,
+        createdAt: response.createdAt,
+        updatedAt: response.updatedAt,
       },
     };
   } catch (error) {

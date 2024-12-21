@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwd } from "@/auth/fetch/fetch-client";
 import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
+import { Loader, Mail } from "lucide-react";
+import { GoogleInput } from "../google-input";
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -18,6 +20,7 @@ export function ForgotPasswordForm() {
     setLoading(true);
 
     try {
+      await delay(500);
       const response = await fetchResetPwd(email);
 
       if (response.ok) {
@@ -48,31 +51,36 @@ export function ForgotPasswordForm() {
     <Card className="w-full max-w-[400px] mx-auto">
       <AuthHeader
         title="Redefinir senha"
-        description="Digite seu email para redefinir sua senha"
+        description="O link será enviado para seu email."
       />
       <CardContent className="space-y-6">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <Input
-              id="email"
-              type="email"
-              placeholder="exemplo@gmail.com"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <div className="relative">
+              <GoogleInput
+                icon={Mail}
+                id="email"
+                type="email"
+                placeholder="Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-10"
+              />
+            </div>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Enviando..." : "Redefinir senha"}
+            {loading ? (
+              <Loader className="animate-spin ml-4" />
+            ) : (
+              "Enviar email"
+            )}
           </Button>
-          <div className="text-center text-sm text-muted-foreground">
-            <Link
-              href="/entrar"
-              className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              Entrar na conta
-            </Link>
-          </div>
+          <Link href={"/entrar"}>
+            <Button variant="outline" className="w-full mt-4">
+              Voltar
+            </Button>
+          </Link>
         </form>
       </CardContent>
     </Card>

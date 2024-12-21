@@ -1,10 +1,9 @@
 export const PROTECTED_ROUTES = {
-  downloads: "/downloads",
-  assinatura: "/assinatura",
+  downloads: "/config/downloads",
+  assinatura: "/config/assinatura",
+  settings: "/config/conta",
   seguindo: "/seguindo",
   curtidas: "/curtidas",
-  perfil: "/perfil",
-  settings: "/settings",
 };
 
 export const PUBLIC_ROUTES = {

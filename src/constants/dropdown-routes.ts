@@ -20,15 +20,11 @@ export const DROP_ROUTES = {
     name: "Curtidas",
   },
   CONFIGURACOES: {
-    href: "/settings",
+    href: "/perfil",
     name: "Configurações",
   },
   LOGIN: {
     href: "/entrar",
     name: "Entrar",
-  },
-  REGISTRO: {
-    href: "/cadastrar",
-    name: "Cadastro",
   },
 } as const;

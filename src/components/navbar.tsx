@@ -23,6 +23,7 @@ import { ModeToggle } from "./theme/mode-toggle";
 import { getSession, logoutSession } from "@/auth/session/auth-session";
 import { DROP_ROUTES } from "@/constants/dropdown-routes";
 import LogoTipo from "@/svg/logotipo";
+import Image from "next/image";
 
 export default async function Navbar() {
   const { isAuthenticated, user } = await getSession();
@@ -42,16 +43,9 @@ export default async function Navbar() {
           <div className="flex items-center space-x-2 sm:space-x-4">
             <ModeToggle />
             {!isAuthenticated ? (
-              <>
-                <Link href={DROP_ROUTES.LOGIN.href}>
-                  <Button>{DROP_ROUTES.LOGIN.name}</Button>
-                </Link>
-                <Link href={DROP_ROUTES.REGISTRO.href}>
-                  <Button variant={"outline"}>
-                    {DROP_ROUTES.REGISTRO.name}
-                  </Button>
-                </Link>
-              </>
+              <Link href={DROP_ROUTES.LOGIN.href}>
+                <Button>{DROP_ROUTES.LOGIN.name}</Button>
+              </Link>
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -60,9 +54,20 @@ export default async function Navbar() {
                     className="relative h-8 w-8 rounded-full"
                   >
                     <Avatar className="w-8 h-8">
-                      <AvatarFallback className="bg-muted-foreground/10">
-                        <User className="w-4 h-4" />
-                      </AvatarFallback>
+                      {user?.profileUrl && user.profileUrl !== "null" ? (
+                        <Image
+                          src={user.profileUrl}
+                          alt="Profile"
+                          width={32}
+                          height={32}
+                          className="object-cover rounded-full"
+                          priority
+                        />
+                      ) : (
+                        <AvatarFallback className="bg-muted-foreground/10">
+                          <User className="w-4 h-4" />
+                        </AvatarFallback>
+                      )}
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -90,16 +95,16 @@ export default async function Navbar() {
                       <span>{DROP_ROUTES.DOWNLOADS.name}</span>
                     </DropdownMenuItem>
                   </Link>
-                  <Link href={DROP_ROUTES.CURTIDAS.href}>
-                    <DropdownMenuItem>
-                      <Heart className="mr-2 h-4 w-4" />
-                      <span>{DROP_ROUTES.CURTIDAS.name}</span>
-                    </DropdownMenuItem>
-                  </Link>
                   <Link href={DROP_ROUTES.ASSINATURA.href}>
                     <DropdownMenuItem>
                       <CreditCard className="mr-2 h-4 w-4" />
                       <span>{DROP_ROUTES.ASSINATURA.name}</span>
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href={DROP_ROUTES.CURTIDAS.href}>
+                    <DropdownMenuItem>
+                      <Heart className="mr-2 h-4 w-4" />
+                      <span>{DROP_ROUTES.CURTIDAS.name}</span>
                     </DropdownMenuItem>
                   </Link>
                   <Link href={DROP_ROUTES.SEGUINDO.href}>

@@ -54,6 +54,7 @@ module.exports = {
       },
       fontFamily: {
         IBMPlex: ["var(--font-ibm-plex)"],
+        openSans: ["var(--font-open-sans)"],
       },
       backgroundImage: {
         "purple-gradient": "url('/assets/images/gradient-bg.svg')",
