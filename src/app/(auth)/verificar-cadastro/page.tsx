@@ -1,6 +1,6 @@
 "use client";
 
-import { verifyRegisterAction } from "@/app/actions/auth.actions";
+import { verifyRegisterAction } from "@/_auth/actions/auth.actions";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

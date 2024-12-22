@@ -1,4 +1,4 @@
-import ProfileForm from "@/components/auth/profile-form";
+import ProfileForm from "@/_components/auth/profile-form";
 
 export default function ConfiguracoesPage() {
   return (

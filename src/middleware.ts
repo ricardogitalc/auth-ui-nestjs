@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { updateSession } from "@/auth/session/auth-session";
-import { isAuthRoute, isProtectedRoute } from "./routes/routes";
+import { updateSession } from "@/_auth/session/auth-session";
+import { isAuthRoute, isProtectedRoute } from "./_routes/routes";
 import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
