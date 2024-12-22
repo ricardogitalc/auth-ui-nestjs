@@ -6,8 +6,9 @@ import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
   const response = await updateSession(request);
+
   const isAuthenticated = cookies().get("accessToken")?.value;
-  // const { isAuthenticated } = await getSession();
+
   const path = request.nextUrl.pathname;
 
   if (isAuthenticated && isAuthRoute(path)) {

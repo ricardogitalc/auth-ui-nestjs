@@ -1,5 +1,3 @@
-"use client";
-
 import {
   User,
   Download,
@@ -21,14 +19,16 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { ModeToggle } from "./theme/mode-toggle";
-import { useSession } from "@/contexts/SessionContext";
 import { DROP_ROUTES } from "@/constants/dropdown-routes";
 import LogoTipo from "@/svg/logotipo";
 import Image from "next/image";
 import { handleLogout } from "@/actions/auth-actions";
+import { getSession } from "@/auth/session/auth-session";
 
-export default function Navbar() {
-  const { isAuthenticated, user } = useSession();
+export default async function Navbar() {
+  const session = await getSession();
+  const isAuthenticated = session.isAuthenticated;
+  const user = session.user;
 
   return (
     <header className="w-full bg-popover border-b border-border">

@@ -51,6 +51,8 @@ export async function loginSession(
       path: "/",
     });
 
+    await getSession();
+
     return response;
   } catch (error: any) {
     throw new Error(getErrorMessage(error));
@@ -89,12 +91,6 @@ export async function getSession(): Promise<AuthTypes.SessionType> {
   } catch (error) {
     return { isAuthenticated: false };
   }
-}
-
-export async function logoutSession() {
-  await cookies().set("accessToken", "", { expires: new Date(0) });
-  await cookies().set("refreshToken", "", { expires: new Date(0) });
-  redirect("/entrar");
 }
 
 export async function updateSession(request: NextRequest) {
@@ -153,4 +149,10 @@ function clearTokens() {
   response.cookies.set("accessToken", "", { expires: new Date(0) });
   response.cookies.set("refreshToken", "", { expires: new Date(0) });
   return response;
+}
+
+export async function logoutSession() {
+  await cookies().set("accessToken", "", { expires: new Date(0) });
+  await cookies().set("refreshToken", "", { expires: new Date(0) });
+  redirect("/entrar");
 }
