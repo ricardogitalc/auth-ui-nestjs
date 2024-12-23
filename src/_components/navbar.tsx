@@ -23,12 +23,13 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import { ModeToggle } from "./theme/mode-toggle";
 import { DROPDOWN_MENU } from "@/_constants/dropdown-menu";
 import Image from "next/image";
-import { handleLogout } from "@/_auth/actions/auth.actions";
 import { useSession } from "@/_contexts/session-context";
-import LogoTipo from "@/_public/svg/logotipo-full";
+import LogoTipo from "../../public/logotipo-full";
+import { useLogout } from "@/hooks/use-logout";
 
-export default async function Navbar() {
-  const { isAuthenticated, user } = await useSession();
+export default function Navbar() {
+  const { isAuthenticated, user } = useSession();
+  const { logout } = useLogout();
 
   return (
     <header className="w-full bg-popover border-b border-border">
@@ -44,11 +45,7 @@ export default async function Navbar() {
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <ModeToggle />
-            {!isAuthenticated ? (
-              <Link href={DROPDOWN_MENU.LOGIN.href}>
-                <Button>{DROPDOWN_MENU.LOGIN.name}</Button>
-              </Link>
-            ) : (
+            {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -77,7 +74,7 @@ export default async function Navbar() {
                   <DropdownMenuLabel className="flex m-2">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
-                        {user?.firstName}
+                        {user?.firstName} {user?.lastName}
                       </p>
                       <p className="text-xs leading-none text-muted-foreground">
                         {user?.email}
@@ -116,16 +113,21 @@ export default async function Navbar() {
                     </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
-                  <form action={handleLogout}>
-                    <DropdownMenuItem asChild>
-                      <button className="w-full flex cursor-pointer items-center">
-                        <LogOutIcon className="mr-2 h-4 w-4 text-red-500" />
-                        <span className="text-red-500">Sair</span>
-                      </button>
-                    </DropdownMenuItem>
-                  </form>
+                  <DropdownMenuItem asChild>
+                    <button
+                      onClick={logout}
+                      className="w-full flex cursor-pointer items-center"
+                    >
+                      <LogOutIcon className="mr-2 h-4 w-4 text-red-500" />
+                      <span className="text-red-500">Sair</span>
+                    </button>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            ) : (
+              <Link href={DROPDOWN_MENU.LOGIN.href}>
+                <Button>{DROPDOWN_MENU.LOGIN.name}</Button>
+              </Link>
             )}
           </div>
         </div>

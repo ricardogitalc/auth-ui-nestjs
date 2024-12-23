@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { loginSession } from "@/_auth/session/auth-session";
 import { AuthHeader } from "./auth-header";
 import { GoogleInput } from "@/_components/google-input";
+import { useSession } from "@/_contexts/session-context";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -21,6 +22,7 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const { login } = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +33,9 @@ export function LoginForm() {
       const response = await loginSession(formData);
 
       if (response.ok) {
+        if (response.user) {
+          login(response.user);
+        }
         toast({
           title: "Sucesso",
           variant: "default",
@@ -78,7 +83,6 @@ export function LoginForm() {
               required
               value={formData.email}
               onChange={handleChange}
-              // icon={User}
             />
           </div>
           <div className="space-y-2">
@@ -90,7 +94,6 @@ export function LoginForm() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                // icon={KeyRound}
               />
               <button
                 type="button"

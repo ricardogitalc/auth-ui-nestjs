@@ -1,11 +1,20 @@
 "use client";
 
-import { SessionType } from "@/_auth/types/auth.types";
-import { createContext, useContext } from "react";
+import { SessionType, UserType } from "@/_auth/types/auth.types";
+import { createContext, useContext, useState } from "react";
 
-export const SessionContext = createContext<SessionType>({
+type SessionContextType = SessionType & {
+  updateUser: (user: UserType | undefined) => void;
+  setIsAuthenticated: (value: boolean) => void;
+  login: (user: UserType) => void;
+};
+
+export const SessionContext = createContext<SessionContextType>({
   isAuthenticated: false,
   user: undefined,
+  updateUser: () => {},
+  setIsAuthenticated: () => {},
+  login: () => {},
 });
 
 export function SessionProvider({
@@ -15,8 +24,35 @@ export function SessionProvider({
   children: React.ReactNode;
   session: SessionType;
 }) {
+  const [currentSession, setCurrentSession] = useState(session);
+
+  const updateUser = (user: UserType | undefined) => {
+    setCurrentSession((prev) => ({
+      ...prev,
+      user,
+      isAuthenticated: !!user,
+    }));
+  };
+
+  const setIsAuthenticated = (value: boolean) => {
+    setCurrentSession((prev) => ({
+      ...prev,
+      isAuthenticated: value,
+      user: value ? prev.user : undefined,
+    }));
+  };
+
+  const login = (user: UserType) => {
+    setCurrentSession({
+      isAuthenticated: true,
+      user,
+    });
+  };
+
   return (
-    <SessionContext.Provider value={session}>
+    <SessionContext.Provider
+      value={{ ...currentSession, updateUser, setIsAuthenticated, login }}
+    >
       {children}
     </SessionContext.Provider>
   );

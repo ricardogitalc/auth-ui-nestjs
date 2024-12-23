@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GoogleInput } from "../../google-input";
 import { ProfileFormData } from "@/_auth/types/auth.types";
-import { PasswordToggle } from "../components/PasswordToggle";
+import { PasswordToggle } from "../../PasswordToggle";
 
 interface PasswordSectionProps {
   formData: ProfileFormData;

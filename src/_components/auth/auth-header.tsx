@@ -1,4 +1,4 @@
-import LogoTipoNoText from "@/_public/svg/logotipo-no-text";
+import LogoTipoNoText from "../../../public/logotipo-no-text";
 import { CardHeader } from "../ui/card";
 
 interface AuthHeaderProps {

@@ -8,6 +8,7 @@ import { fetchRegister } from "@/_auth/client/api-client";
 import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
 import { GoogleInput } from "../google-input";
+import { PasswordToggle } from "../PasswordToggle";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -136,23 +137,10 @@ export function RegisterForm() {
                 onChange={handleChange}
                 className="pl-10"
               />
-              <button
-                type="button"
+              <PasswordToggle
+                showPasswords={showPasswords}
                 onClick={() => setShowPasswords(!showPasswords)}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
-                {showPasswords ? (
-                  <EyeOff
-                    className="h-5 w-5 text-muted-foreground"
-                    strokeWidth={2.3}
-                  />
-                ) : (
-                  <Eye
-                    className="h-5 w-5 text-muted-foreground"
-                    strokeWidth={2.3}
-                  />
-                )}
-              </button>
+              />
             </div>
           </div>
           <div className="space-y-2">

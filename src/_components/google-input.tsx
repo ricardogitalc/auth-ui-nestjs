@@ -1,11 +1,15 @@
 import type { InputHTMLAttributes } from "react";
 import { LucideIcon } from "lucide-react";
+import { useId } from "react";
 
 interface GoogleInputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: LucideIcon;
 }
 
-export const GoogleInput = ({ icon: Icon, ...props }: GoogleInputProps) => {
+export const GoogleInput = ({ icon: Icon, id, ...props }: GoogleInputProps) => {
+  const generatedId = useId();
+  const inputId = id || generatedId;
+
   return (
     <div className="relative mt-2">
       {Icon && (
@@ -16,13 +20,14 @@ export const GoogleInput = ({ icon: Icon, ...props }: GoogleInputProps) => {
       )}
       <input
         {...props}
+        id={inputId}
         className={`peer rounded-md w-full px-4 py-3 text-sm text-foreground border-border border
                focus:bg-background bg-background
                [&:-webkit-autofill]:!bg-background [&:-webkit-autofill]:!bg-clip-text
                placeholder-transparent ${Icon ? "pl-10" : ""}`}
       />
       <label
-        htmlFor={props?.id}
+        htmlFor={inputId}
         className={`absolute left-2 -top-2.5 px-1 text-sm transition-all bg-background rounded 
                text-muted-foreground peer-placeholder-shown:text-sm peer-placeholder-shown:text-muted-foreground 
                peer-placeholder-shown:top-3 ${

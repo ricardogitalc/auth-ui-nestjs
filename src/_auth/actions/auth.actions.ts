@@ -21,7 +21,7 @@ export async function verifyRegisterAction(verificationToken: string) {
 }
 
 export async function handleLogout() {
-  await logoutSession();
+  return await logoutSession();
 }
 
 export async function updateProfileAction(data: AuthTypes.UpdateUserType) {

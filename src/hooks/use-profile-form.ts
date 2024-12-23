@@ -3,11 +3,12 @@ import { useSession } from "@/_contexts/session-context";
 import { useToast } from "@/hooks/use-toast";
 import { updateProfileAction } from "@/_auth/actions/auth.actions";
 import { ProfileFormData } from "@/_auth/types/auth.types";
+import { revalidatePath } from "next/cache";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useProfileForm = () => {
-  const { user } = useSession();
+  const { user, updateUser } = useSession();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [displayName, setDisplayName] = useState({
@@ -75,7 +76,7 @@ export const useProfileForm = () => {
     });
   };
 
-  const handleUpdateResponse = (response: {
+  const handleUpdateResponse = async (response: {
     ok: boolean;
     message?: string;
   }) => {
@@ -89,6 +90,13 @@ export const useProfileForm = () => {
       setInitialFormData(updatedFormData);
       setFormData(updatedFormData);
 
+      if (user) {
+        updateUser({
+          ...user,
+          ...updatedFormData,
+        });
+      }
+
       if (
         formData.firstName !== displayName.firstName ||
         formData.lastName !== displayName.lastName
@@ -98,6 +106,10 @@ export const useProfileForm = () => {
           lastName: formData.lastName,
         });
       }
+
+      await fetch("/api/revalidate-navbar", {
+        method: "POST",
+      });
 
       toast({
         title: "Sucesso",

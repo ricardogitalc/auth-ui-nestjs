@@ -58,8 +58,11 @@ export async function loginSession(
       AUTH_CONFIG.COOKIE_OPTIONS
     );
 
-    await getSessionApi();
-    return response;
+    const session = await getSessionApi();
+    return {
+      ...response,
+      user: session.user,
+    };
   } catch (error: any) {
     throw new Error(getErrorMessage(error));
   }
@@ -174,5 +177,4 @@ export async function logoutSession() {
   const cookieStore = cookies();
   cookieStore.set("accessToken", "", { expires: new Date(0) });
   cookieStore.set("refreshToken", "", { expires: new Date(0) });
-  redirect("/entrar");
 }
