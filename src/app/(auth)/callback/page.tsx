@@ -1,10 +1,10 @@
 "use server";
 
+import { getSessionApi } from "@/_auth/session/auth-session";
 import { redirect } from "next/navigation";
-import { getSession } from "@/_auth/session/auth-session";
 
 export default async function CallbackPage() {
-  const isAuthenticated = await getSession();
+  const isAuthenticated = await getSessionApi();
 
   if (isAuthenticated) {
     redirect("/");

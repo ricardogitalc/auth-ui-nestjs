@@ -6,84 +6,94 @@ import { redirect } from "next/navigation";
 import { getErrorMessage } from "../utils/error-handler";
 import * as AuthTypes from "@/_auth/types/auth.types";
 import {
+  fetchGetProfile,
   fetchLogin,
   fetchRefresh,
-  fetchGetProfile,
 } from "../client/api-client";
 import { NextRequest, NextResponse } from "next/server";
+import { AUTH_CONFIG } from "@/_config/auth.config";
 
-const JWT_KEY = process.env.JWT_SECRET_KEY as string;
-const REFRESH_KEY = process.env.REFRESH_SECRET_KEY as string;
-
-function generateKey(secret: string): Uint8Array {
+const generateKey = (secret: string): Uint8Array => {
   const encoder = new TextEncoder();
   const keyBytes = encoder.encode(secret);
   const buffer = new Uint8Array(32);
   buffer.set(keyBytes.slice(0, 32));
   return buffer;
-}
+};
 
-async function decryptJWT(token: string, secret: string) {
+const decryptJWT = async (token: string, secret: string) => {
   const key = generateKey(secret);
-  return await jose.jwtDecrypt(token, key, {
-    clockTolerance: 1,
-  });
-}
+  return await jose.jwtDecrypt(token, key, { clockTolerance: 1 });
+};
+
+const setAuthCookies = (
+  response: NextResponse,
+  tokens: Pick<AuthTypes.TokenResponse, "accessToken" | "refreshToken">
+) => {
+  const { accessToken, refreshToken } = tokens;
+  response.cookies.set("accessToken", accessToken, AUTH_CONFIG.COOKIE_OPTIONS);
+  response.cookies.set(
+    "refreshToken",
+    refreshToken,
+    AUTH_CONFIG.COOKIE_OPTIONS
+  );
+  return response;
+};
 
 export async function loginSession(
   credentials: AuthTypes.LoginType
 ): Promise<AuthTypes.LoginResponse> {
   try {
     const response = await fetchLogin(credentials);
-    const { accessToken, refreshToken } = response;
+    const cookieStore = cookies();
 
-    cookies().set("accessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
+    cookieStore.set(
+      "accessToken",
+      response.accessToken,
+      AUTH_CONFIG.COOKIE_OPTIONS
+    );
+    cookieStore.set(
+      "refreshToken",
+      response.refreshToken,
+      AUTH_CONFIG.COOKIE_OPTIONS
+    );
 
-    cookies().set("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
-
-    await getSession();
-
+    await getSessionApi();
     return response;
   } catch (error: any) {
     throw new Error(getErrorMessage(error));
   }
 }
 
-export async function getSession(): Promise<AuthTypes.SessionType> {
+export async function getSessionApi(): Promise<AuthTypes.SessionType> {
   const accessToken = cookies().get("accessToken")?.value;
-
-  if (!accessToken) {
-    return { isAuthenticated: false };
-  }
+  if (!accessToken) return { isAuthenticated: false };
 
   try {
-    const decoded = await decryptJWT(accessToken, JWT_KEY);
-    const payload = decoded.payload as any;
+    const user = await fetchGetProfile(accessToken);
+    if (!user.ok) return { isAuthenticated: false };
 
     return {
       isAuthenticated: true,
       user: {
-        id: payload.id,
-        firstName: payload.firstName,
-        lastName: payload.lastName,
-        email: payload.email,
-        role: payload.role,
-        provider: payload.provider,
-        phone: payload.phone,
-        profileUrl: payload.profileUrl,
-        verified: payload.verified,
-        createdAt: payload.createdAt,
-        updatedAt: payload.updatedAt,
+        role: user.role,
+        provider: user.provider,
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profileUrl: user.profileUrl,
+        phone: user.phone,
+        zipCode: user.zipCode,
+        city: user.city,
+        state: user.state,
+        address: user.address,
+        number: user.number,
+        district: user.district,
+        cpf: user.cpf,
+        verified: user.verified,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     };
   } catch (error) {
@@ -96,50 +106,61 @@ export async function updateSession(request: NextRequest) {
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
   if (!refreshToken || !accessToken) {
-    return clearTokens();
+    return { ok: false, response: clearTokens() };
   }
 
   try {
-    const accessTokenStatus = await verifyToken(accessToken, JWT_KEY);
-    if (accessTokenStatus.isValid) {
-      return NextResponse.next();
+    const tokenInfo = await getTokenInfo(accessToken, AUTH_CONFIG.JWT_KEY);
+    if (tokenInfo.isValid) {
+      return { ok: true, response: NextResponse.next() };
     }
 
-    const refreshTokenStatus = await verifyToken(refreshToken, REFRESH_KEY);
+    const refreshTokenStatus = await verifyToken(
+      refreshToken,
+      AUTH_CONFIG.REFRESH_KEY
+    );
     if (!refreshTokenStatus.isValid) {
-      return clearTokens();
+      return { ok: false, response: clearTokens() };
     }
 
     const newTokens = await fetchRefresh(refreshToken);
-    const response = NextResponse.next();
+    if (!newTokens.ok) {
+      return { ok: false, response: clearTokens() };
+    }
 
-    response.cookies.set("accessToken", newTokens.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
-
-    response.cookies.set("refreshToken", newTokens.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    });
-
-    return response;
+    return {
+      ok: true,
+      response: setAuthCookies(NextResponse.next(), newTokens),
+    };
   } catch (error) {
-    return clearTokens();
+    return { ok: false, response: clearTokens() };
+  }
+}
+
+async function getTokenInfo(token: string, secret: string) {
+  try {
+    const decoded = await decryptJWT(token, secret);
+    const now = Math.floor(Date.now() / 1000);
+    const exp = decoded.payload.exp || 0;
+    const timeLeft = exp - now;
+
+    return {
+      timeLeft,
+      isValid: timeLeft > 0,
+      payload: decoded.payload,
+    };
+  } catch (error) {
+    return {
+      timeLeft: -1,
+      isValid: false,
+      payload: null,
+    };
   }
 }
 
 async function verifyToken(token: string, secret: string) {
-  try {
-    await decryptJWT(token, secret);
-    return { isValid: true };
-  } catch (error: any) {
-    return { isValid: false };
-  }
+  const tokenInfo = await getTokenInfo(token, secret);
+  return { isValid: tokenInfo.timeLeft > 30 };
 }
 
 function clearTokens() {
@@ -150,7 +171,8 @@ function clearTokens() {
 }
 
 export async function logoutSession() {
-  await cookies().set("accessToken", "", { expires: new Date(0) });
-  await cookies().set("refreshToken", "", { expires: new Date(0) });
+  const cookieStore = cookies();
+  cookieStore.set("accessToken", "", { expires: new Date(0) });
+  cookieStore.set("refreshToken", "", { expires: new Date(0) });
   redirect("/entrar");
 }

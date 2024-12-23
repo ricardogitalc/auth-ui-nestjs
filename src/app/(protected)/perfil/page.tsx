@@ -1,3 +1,5 @@
+"use client";
+
 import ProfileForm from "@/_components/auth/profile-form";
 
 export default function ConfiguracoesPage() {

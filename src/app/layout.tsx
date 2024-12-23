@@ -7,7 +7,7 @@ import Navbar from "@/_components/navbar";
 
 import "./globals.css";
 import { SessionProvider } from "@/_contexts/session-context";
-import { getSession } from "@/_auth/session/auth-session";
+import { getSessionApi } from "@/_auth/session/auth-session";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -25,7 +25,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
+  // const session = await getSessionToken();
+  const session = await getSessionApi();
 
   return (
     <html lang="pt-BR">

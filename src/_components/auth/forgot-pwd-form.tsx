@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwd } from "@/_auth/client/api-client";
 import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
-import { Loader, Mail } from "lucide-react";
+import { Loader } from "lucide-react";
 import { GoogleInput } from "../google-input";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -58,7 +58,6 @@ export function ForgotPwdForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
-                icon={Mail}
                 id="email"
                 type="email"
                 placeholder="Email"

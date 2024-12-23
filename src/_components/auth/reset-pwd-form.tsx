@@ -1,4 +1,4 @@
-import { Eye, EyeOff, KeyRound, Loader } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/_components/ui/button";
 import Link from "next/link";
@@ -47,6 +47,7 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
           title: "Sucesso",
           description: response.message,
         });
+        router.push("/entrar");
       } else {
         toast({
           variant: "destructive",
@@ -83,7 +84,6 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
-                icon={KeyRound}
                 id="newPassword"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Nova senha"
@@ -108,7 +108,6 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
-                icon={KeyRound}
                 id="confirmNewPassword"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Confirmar senha"

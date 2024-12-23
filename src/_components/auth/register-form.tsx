@@ -91,7 +91,6 @@ export function RegisterForm() {
             <div className="space-y-2">
               <div className="relative">
                 <GoogleInput
-                  // icon={User}
                   id="firstName"
                   placeholder="Nome"
                   required
@@ -116,7 +115,6 @@ export function RegisterForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
-                // icon={Mail}
                 id="email"
                 type="email"
                 placeholder="Email"
@@ -130,7 +128,6 @@ export function RegisterForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
-                // icon={KeyRound}
                 id="password"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Senha"
@@ -162,7 +159,6 @@ export function RegisterForm() {
             <div className="relative">
               <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <GoogleInput
-                // icon={KeyRound}
                 id="confirmPassword"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Confirmar senha"
@@ -187,7 +183,6 @@ export function RegisterForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
-                // icon={Phone}
                 id="phone"
                 type="tel"
                 placeholder="Telefone"

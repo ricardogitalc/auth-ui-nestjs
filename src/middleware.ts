@@ -2,13 +2,16 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { updateSession } from "@/_auth/session/auth-session";
 import { isAuthRoute, isProtectedRoute } from "./_routes/routes";
-import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
-  const response = await updateSession(request);
+  const sessionResponse = await updateSession(request);
+  if (!sessionResponse.ok) {
+    return isProtectedRoute(request.nextUrl.pathname)
+      ? NextResponse.redirect(new URL("/entrar", request.url))
+      : sessionResponse.response;
+  }
 
-  const isAuthenticated = cookies().get("accessToken")?.value;
-
+  const isAuthenticated = request.cookies.get("accessToken")?.value;
   const path = request.nextUrl.pathname;
 
   if (isAuthenticated && isAuthRoute(path)) {
@@ -19,7 +22,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/entrar", request.url));
   }
 
-  return response;
+  return sessionResponse.response;
 }
 
 export const config = {
