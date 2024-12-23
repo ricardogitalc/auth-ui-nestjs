@@ -77,10 +77,11 @@ export function LoginForm() {
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <GoogleInput
+              required
+              maxLength={50}
               id="email"
               type="email"
               placeholder="Email"
-              required
               value={formData.email}
               onChange={handleChange}
             />
@@ -88,10 +89,11 @@ export function LoginForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
+                required
+                maxLength={15}
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Senha"
-                required
                 value={formData.password}
                 onChange={handleChange}
               />

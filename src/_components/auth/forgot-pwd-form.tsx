@@ -58,10 +58,11 @@ export function ForgotPwdForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
+                required
+                maxLength={50}
                 id="email"
                 type="email"
                 placeholder="Email"
-                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-10"

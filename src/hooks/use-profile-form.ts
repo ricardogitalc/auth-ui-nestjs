@@ -3,7 +3,7 @@ import { useSession } from "@/_contexts/session-context";
 import { useToast } from "@/hooks/use-toast";
 import { updateProfileAction } from "@/_auth/actions/auth.actions";
 import { ProfileFormData } from "@/_auth/types/auth.types";
-import { revalidatePath } from "next/cache";
+import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -33,6 +33,7 @@ export const useProfileForm = () => {
   });
 
   const [formData, setFormData] = useState<ProfileFormData>(initialFormData);
+  const [isValidZipCode, setIsValidZipCode] = useState(true);
 
   const hasChanges = () => {
     return Object.keys(formData).some(
@@ -51,9 +52,8 @@ export const useProfileForm = () => {
 
   const validatePasswordFields = (data: ProfileFormData) => {
     if (!data.currentPassword && !data.newPassword) {
-      delete data.currentPassword;
-      delete data.newPassword;
-      return true;
+      const { currentPassword, newPassword, ...rest } = data;
+      return { isValid: true, data: rest };
     }
 
     if (!data.currentPassword || !data.newPassword) {
@@ -62,9 +62,23 @@ export const useProfileForm = () => {
         title: "Erro",
         description: "Preencha tanto a senha atual quanto a nova senha.",
       });
-      return false;
+      return { isValid: false, data };
     }
 
+    return { isValid: true, data };
+  };
+
+  const validateAddressFields = (data: ProfileFormData) => {
+    if (data.zipCode) {
+      return (
+        isValidZipCode &&
+        data.city.trim() !== "" &&
+        data.state.trim() !== "" &&
+        data.address.trim() !== "" &&
+        data.number.trim() !== "" &&
+        data.district.trim() !== ""
+      );
+    }
     return true;
   };
 
@@ -137,19 +151,32 @@ export const useProfileForm = () => {
     try {
       await delay(500);
       const dataToUpdate = { ...formData };
+      const validation = validatePasswordFields(dataToUpdate);
 
-      if (!validatePasswordFields(dataToUpdate)) {
+      if (!validation.isValid) {
         setLoading(false);
         return;
       }
 
-      const response = await updateProfileAction(dataToUpdate);
+      const response = await updateProfileAction(validation.data);
       handleUpdateResponse(response);
     } catch (error: any) {
       handleError(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const isFormValid = () => {
+    if (!validateAddressFields(formData)) {
+      return false;
+    }
+
+    if (formData.newPassword || formData.currentPassword) {
+      const passwordValidation = validatePassword(formData.newPassword);
+      return hasChanges() && isPasswordStrong(passwordValidation);
+    }
+    return hasChanges();
   };
 
   return {
@@ -160,5 +187,12 @@ export const useProfileForm = () => {
     handleChange,
     handleSubmit,
     hasChanges,
+    setFormData,
+    isFormValid,
+    isPasswordValid: formData.newPassword
+      ? isPasswordStrong(validatePassword(formData.newPassword))
+      : true,
+    setIsValidZipCode,
+    isValidZipCode,
   };
 };

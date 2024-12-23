@@ -1,5 +1,6 @@
 import { GoogleInput } from "../../google-input";
 import { ProfileFormData } from "@/_auth/types/auth.types";
+import { capitalize } from "@/lib/helpers/capitalize-helper";
 
 interface AccountSectionProps {
   formData: ProfileFormData;
@@ -7,6 +8,12 @@ interface AccountSectionProps {
 }
 
 export const AccountSection = ({ formData, onChange }: AccountSectionProps) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    e.target.value = capitalize(value);
+    onChange(e);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between my-4">
@@ -16,16 +23,20 @@ export const AccountSection = ({ formData, onChange }: AccountSectionProps) => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <GoogleInput
+          required
+          maxLength={15}
           name="firstName"
           value={formData.firstName}
-          onChange={onChange}
+          onChange={handleNameChange}
           placeholder="Nome"
           className="pl-10"
         />
         <GoogleInput
+          required
+          maxLength={15}
           name="lastName"
           value={formData.lastName}
-          onChange={onChange}
+          onChange={handleNameChange}
           placeholder="Sobrenome"
           className="pl-10"
         />

@@ -84,10 +84,11 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
+                required
+                maxLength={15}
                 id="newPassword"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Nova senha"
-                required
                 value={formData.newPassword}
                 onChange={handleChange}
                 className="pl-10"
@@ -108,10 +109,11 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
+                required
+                maxLength={15}
                 id="confirmNewPassword"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Confirmar senha"
-                required
                 value={formData.confirmNewPassword}
                 onChange={handleChange}
                 className="pl-10"

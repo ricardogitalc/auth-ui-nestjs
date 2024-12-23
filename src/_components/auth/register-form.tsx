@@ -8,7 +8,11 @@ import { fetchRegister } from "@/_auth/client/api-client";
 import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
 import { GoogleInput } from "../google-input";
-import { PasswordToggle } from "../PasswordToggle";
+import { PasswordToggle } from "../pwd-toggle";
+import { insertMaskInPhone } from "@/lib/masks";
+import { capitalize } from "@/lib/helpers/capitalize-helper";
+import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
+import { PasswordStrength } from "../pwd-strength";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -25,8 +29,35 @@ export function RegisterForm() {
   });
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const passwordValidation = validatePassword(formData.password);
+  const isPasswordValid = isPasswordStrong(passwordValidation);
+  const showHelper =
+    formData.password &&
+    formData.password.length > 0 &&
+    !isPasswordStrong(passwordValidation);
+
+  const isFormValid = () => {
+    return (
+      formData.firstName &&
+      formData.lastName &&
+      formData.email &&
+      formData.phone &&
+      isPasswordValid &&
+      formData.password === confirmPassword
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isPasswordValid) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "A senha não atende aos requisitos mínimos de segurança",
+      });
+      return;
+    }
 
     if (formData.password !== confirmPassword) {
       toast({
@@ -72,6 +103,16 @@ export function RegisterForm() {
 
     if (id === "confirmPassword") {
       setConfirmPassword(value);
+    } else if (id === "phone") {
+      setFormData({
+        ...formData,
+        [id]: insertMaskInPhone(value),
+      });
+    } else if (id === "firstName" || id === "lastName") {
+      setFormData({
+        ...formData,
+        [id]: capitalize(value),
+      });
     } else {
       setFormData({
         ...formData,
@@ -92,9 +133,10 @@ export function RegisterForm() {
             <div className="space-y-2">
               <div className="relative">
                 <GoogleInput
+                  required
+                  maxLength={15}
                   id="firstName"
                   placeholder="Nome"
-                  required
                   value={formData.firstName}
                   onChange={handleChange}
                   className="pl-10"
@@ -104,9 +146,10 @@ export function RegisterForm() {
             <div className="space-y-2">
               <div className="relative">
                 <GoogleInput
+                  required
+                  maxLength={15}
                   id="lastName"
                   placeholder="Sobrenome"
-                  required
                   value={formData.lastName}
                   onChange={handleChange}
                 />
@@ -116,10 +159,11 @@ export function RegisterForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
+                required
+                maxLength={50}
                 id="email"
                 type="email"
                 placeholder="Email"
-                required
                 value={formData.email}
                 onChange={handleChange}
                 className="pl-10"
@@ -129,10 +173,11 @@ export function RegisterForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
+                required
+                maxLength={15}
                 id="password"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Senha"
-                required
                 value={formData.password}
                 onChange={handleChange}
                 className="pl-10"
@@ -142,15 +187,17 @@ export function RegisterForm() {
                 onClick={() => setShowPasswords(!showPasswords)}
               />
             </div>
+            {showHelper && <PasswordStrength validation={passwordValidation} />}
           </div>
           <div className="space-y-2">
             <div className="relative">
               <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <GoogleInput
+                required
+                maxLength={15}
                 id="confirmPassword"
                 type={showPasswords ? "text" : "password"}
                 placeholder="Confirmar senha"
-                required
                 value={confirmPassword}
                 onChange={handleChange}
                 className="pl-10"
@@ -171,17 +218,22 @@ export function RegisterForm() {
           <div className="space-y-2">
             <div className="relative">
               <GoogleInput
+                required
+                maxLength={15}
                 id="phone"
                 type="tel"
                 placeholder="Telefone"
-                required
                 value={formData.phone}
                 onChange={handleChange}
                 className="pl-10"
               />
             </div>
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={loading || !isFormValid()}
+          >
             {loading ? <Loader className="animate-spin ml-4" /> : "Criar conta"}
           </Button>
         </form>

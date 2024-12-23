@@ -89,8 +89,8 @@ export interface ProfileFormData {
   number: string;
   district: string;
   cpf: string;
-  currentPassword?: string;
-  newPassword?: string;
+  currentPassword?: string; // Make optional
+  newPassword?: string; // Make optional
 }
 
 export * from "./auth.types";
