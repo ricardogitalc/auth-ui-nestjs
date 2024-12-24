@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 interface PasswordToggleProps {
   showPasswords: boolean;
   onClick: () => void;
+  className?: string; // Make className optional
 }
 
 export const PasswordToggle = ({

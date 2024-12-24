@@ -1,4 +1,4 @@
-import LogoTipoNoText from "../../../public/logotipo-no-text";
+import { TailwindLogo } from "../../../public/tailwind-logo";
 import { CardHeader } from "../ui/card";
 
 interface AuthHeaderProps {
@@ -10,7 +10,7 @@ export function AuthHeader({ title, description }: AuthHeaderProps) {
   return (
     <CardHeader className="space-y-4 my-4">
       <div className="flex justify-center items-center">
-        <LogoTipoNoText className="w-8 h-8" />
+        <TailwindLogo />
       </div>
       <div className="text-center">
         <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>

@@ -1,13 +1,15 @@
 import { Button } from "@/_components/ui/button";
 import { Card, CardContent, CardHeader } from "@/_components/ui/card";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { Loader, Save, User } from "lucide-react";
+import { DeleteIcon, Loader, Save, UploadIcon, User } from "lucide-react";
 import Image from "next/image";
 import { useProfileForm } from "@/hooks/use-profile-form";
 import { AccountSection } from "./account-sections/AccountSection";
 import { AddressSection } from "./account-sections/AddressSection";
 import { PersonalInfoSection } from "./account-sections/PersonalInfoSection";
 import { PasswordSection } from "./account-sections/PasswordSection";
+import { HiUser } from "react-icons/hi2";
+import { Separator } from "../ui/separator";
 
 export default function ProfileForm() {
   const {
@@ -26,34 +28,53 @@ export default function ProfileForm() {
 
   return (
     <Card className="w-full max-w-[800px] mx-auto border-none shadow-none">
-      <CardHeader className="space-y-6 mt-4">
-        <div className="flex justify-start">
-          {user?.profileUrl ? (
-            <Image
-              src={user.profileUrl}
-              width={100}
-              height={100}
-              alt="Profile Image"
-              className="object-cover rounded-full"
-            />
-          ) : (
-            <Avatar className="w-100 h-100">
-              <AvatarFallback className="bg-muted-foreground/10 w-[100px] h-[100px]">
-                <User className="w-12 h-12" />
-              </AvatarFallback>
-            </Avatar>
-          )}
-        </div>
-        <div className="space-y-1">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            {displayName.firstName} {displayName.lastName}
-          </h1>
-          <p className="text-sm text-muted-foreground">{user?.email}</p>
+      <CardHeader className="space-y-6 mt-4 bg-muted/30 rounded-xl my-8 p-4 sm:p-6 mx-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            {user?.profileUrl ? (
+              <Image
+                src={user.profileUrl}
+                width={80}
+                height={80}
+                alt="Profile Image"
+                className="object-cover rounded-full"
+              />
+            ) : (
+              <div className="object-cover bg-muted rounded-full w-[80px] h-[80px] flex items-center justify-center relative overflow-hidden">
+                <HiUser className="w-full h-full fill-muted-foreground/80 translate-y-2" />
+              </div>
+            )}
+            <div className="space-y-1">
+              <h1 className="text-xl font-semibold tracking-tight">
+                Foto de perfil
+              </h1>
+              <p className="text-xs text-muted-foreground">
+                PNG, JPEG abaixo de 15MB
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-2 sm:gap-4">
+            <Button size="sm" className="w-full sm:w-auto">
+              <UploadIcon className="w-4 h-4 mr-2" />
+              Atualizar foto
+            </Button>
+            <Button
+              size="sm"
+              className="w-full sm:w-auto"
+              variant={"secondary"}
+            >
+              Delete
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-8">
         <form onSubmit={handleSubmit}>
           <AccountSection formData={formData} onChange={handleChange} />
+
+          <PersonalInfoSection formData={formData} onChange={handleChange} />
+
           <AddressSection
             formData={formData}
             onChange={handleChange}
@@ -61,13 +82,14 @@ export default function ProfileForm() {
             setIsValidZipCode={setIsValidZipCode}
             isValidZipCode={isValidZipCode}
           />
-          <PersonalInfoSection formData={formData} onChange={handleChange} />
           {user?.provider === "CREDENTIALS" && (
-            <PasswordSection
-              formData={formData}
-              onChange={handleChange}
-              isPasswordValid={isPasswordValid}
-            />
+            <>
+              <PasswordSection
+                formData={formData}
+                onChange={handleChange}
+                isPasswordValid={isPasswordValid}
+              />
+            </>
           )}
 
           <div className="flex justify-start mt-8">

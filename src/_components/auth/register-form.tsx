@@ -9,7 +9,7 @@ import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
 import { GoogleInput } from "../google-input";
 import { PasswordToggle } from "../pwd-toggle";
-import { insertMaskInPhone } from "@/lib/masks";
+import { insertMaskInPhone } from "@/lib/helpers/masks";
 import { capitalize } from "@/lib/helpers/capitalize-helper";
 import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
 import { PasswordStrength } from "../pwd-strength";

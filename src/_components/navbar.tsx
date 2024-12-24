@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  User,
   Download,
   CreditCard,
   Users,
@@ -19,13 +18,13 @@ import {
   DropdownMenuTrigger,
 } from "@/_components/ui/dropdown-menu";
 import Link from "next/link";
-import { Avatar, AvatarFallback } from "./ui/avatar";
 import { ModeToggle } from "./theme/mode-toggle";
 import { DROPDOWN_MENU } from "@/_constants/dropdown-menu";
 import Image from "next/image";
 import { useSession } from "@/_contexts/session-context";
-import LogoTipo from "../../public/logotipo-full";
 import { useLogout } from "@/hooks/use-logout";
+import { HiUser } from "react-icons/hi2";
+import { TailwindLogo } from "../../public/tailwind-logo";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useSession();
@@ -40,7 +39,7 @@ export default function Navbar() {
               href={DROPDOWN_MENU.HOME.href}
               className="flex items-center gap-2"
             >
-              <LogoTipo className="w-32 h-8 fill-foreground" />
+              <TailwindLogo />
             </Link>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
@@ -48,27 +47,22 @@ export default function Navbar() {
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="relative h-8 w-8 rounded-full"
-                  >
-                    <Avatar className="w-8 h-8">
-                      {user?.profileUrl && user.profileUrl !== "null" ? (
-                        <Image
-                          src={user.profileUrl}
-                          alt="Profile"
-                          width={32}
-                          height={32}
-                          className="object-cover rounded-full"
-                          priority
-                        />
-                      ) : (
-                        <AvatarFallback className="bg-muted-foreground/10">
-                          <User className="w-4 h-4" />
-                        </AvatarFallback>
-                      )}
-                    </Avatar>
-                  </Button>
+                  <div className="relative cursor-pointer border border-border rounded-full overflow-hidden">
+                    {user?.profileUrl && user.profileUrl !== "null" ? (
+                      <Image
+                        src={user.profileUrl}
+                        alt="Profile"
+                        width={32}
+                        height={32}
+                        className="object-cover rounded-full"
+                        priority
+                      />
+                    ) : (
+                      <div className="object-cover bg-muted rounded-full w-7 h-7 flex items-center justify-center relative overflow-hidden">
+                        <HiUser className="w-full h-full fill-muted-foreground/80 translate-y-1" />
+                      </div>
+                    )}
+                  </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel className="flex m-2">
