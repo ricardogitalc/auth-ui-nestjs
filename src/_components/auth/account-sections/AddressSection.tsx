@@ -1,4 +1,3 @@
-import { GoogleInput } from "../../google-input";
 import { ProfileFormData } from "@/_auth/types/auth.types";
 import { insertMaskInCEP } from "@/lib/helpers/masks";
 import { fetchAddressByCEP } from "@/services/viacep";
@@ -83,8 +82,9 @@ export const AddressSection = ({
             value={formData.zipCode}
             onChange={handleCepChange}
             placeholder="CEP"
-            className={`w-full ${!isValidZipCode ? "border-red-500" : ""}`}
+            className={`w-full ${!isValidZipCode ? "" : ""}`}
           />
+          {cepError && <p className="text-sm text-red-500 mt-1">{cepError}</p>}
         </div>
 
         <div className="space-y-2">
@@ -96,9 +96,7 @@ export const AddressSection = ({
             value={formData.city}
             onChange={handleAddressChange}
             placeholder="Cidade"
-            className={`w-full ${
-              isFieldRequired && !formData.city ? "border-red-500" : ""
-            }`}
+            className={`w-full ${isFieldRequired && !formData.city ? "" : ""}`}
           />
         </div>
 
@@ -111,9 +109,7 @@ export const AddressSection = ({
             value={formData.state}
             onChange={handleAddressChange}
             placeholder="Estado"
-            className={`w-full ${
-              isFieldRequired && !formData.state ? "border-red-500" : ""
-            }`}
+            className={`w-full ${isFieldRequired && !formData.state ? "" : ""}`}
           />
         </div>
 
@@ -127,7 +123,7 @@ export const AddressSection = ({
             onChange={handleAddressChange}
             placeholder="Endereço"
             className={`w-full ${
-              isFieldRequired && !formData.address ? "border-red-500" : ""
+              isFieldRequired && !formData.address ? "" : ""
             }`}
           />
         </div>
@@ -154,7 +150,7 @@ export const AddressSection = ({
             onChange={handleAddressChange}
             placeholder="Bairro"
             className={`w-full ${
-              isFieldRequired && !formData.district ? "border-red-500" : ""
+              isFieldRequired && !formData.district ? "" : ""
             }`}
           />
         </div>

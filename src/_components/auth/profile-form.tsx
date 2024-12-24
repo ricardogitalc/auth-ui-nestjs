@@ -1,7 +1,6 @@
 import { Button } from "@/_components/ui/button";
 import { Card, CardContent, CardHeader } from "@/_components/ui/card";
-import { Avatar, AvatarFallback } from "../ui/avatar";
-import { DeleteIcon, Loader, Save, UploadIcon, User } from "lucide-react";
+import { Loader, Save, UploadIcon } from "lucide-react";
 import Image from "next/image";
 import { useProfileForm } from "@/hooks/use-profile-form";
 import { AccountSection } from "./account-sections/AccountSection";
@@ -9,13 +8,11 @@ import { AddressSection } from "./account-sections/AddressSection";
 import { PersonalInfoSection } from "./account-sections/PersonalInfoSection";
 import { PasswordSection } from "./account-sections/PasswordSection";
 import { HiUser } from "react-icons/hi2";
-import { Separator } from "../ui/separator";
 
 export default function ProfileForm() {
   const {
     user,
     loading,
-    displayName,
     formData,
     handleChange,
     handleSubmit,
@@ -48,7 +45,7 @@ export default function ProfileForm() {
               <h1 className="text-xl font-semibold tracking-tight">
                 Foto de perfil
               </h1>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 PNG, JPEG abaixo de 15MB
               </p>
             </div>
