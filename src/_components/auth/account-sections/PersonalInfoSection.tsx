@@ -9,27 +9,35 @@ import { Input } from "@/_components/ui/input";
 interface PersonalInfoSectionProps {
   formData: ProfileFormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setIsCpfValid: (value: boolean) => void;
+  setIsPhoneValid: (value: boolean) => void;
 }
 
 export const PersonalInfoSection = ({
   formData,
   onChange,
+  setIsCpfValid,
+  setIsPhoneValid,
 }: PersonalInfoSectionProps) => {
-  const [isCpfValid, setIsCpfValid] = useState(true);
-  const [isPhoneValid, setIsPhoneValid] = useState(true);
+  const [localCpfValid, setLocalCpfValid] = useState(true);
+  const [localPhoneValid, setLocalPhoneValid] = useState(true);
 
   const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const maskedValue = insertMaskInCpf(e.target.value);
     e.target.value = maskedValue;
     const cpfValue = maskedValue.replace(/\D/g, "");
-    setIsCpfValid(cpfValue.length === 0 || validateCPF(cpfValue));
+    const isValid = cpfValue.length === 0 || validateCPF(cpfValue);
+    setLocalCpfValid(isValid);
+    setIsCpfValid(isValid);
     onChange(e);
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const maskedValue = insertMaskInPhone(e.target.value);
     e.target.value = maskedValue;
-    setIsPhoneValid(maskedValue.length === 0 || validatePhone(maskedValue));
+    const isValid = maskedValue.length === 0 || validatePhone(maskedValue);
+    setLocalPhoneValid(isValid);
+    setIsPhoneValid(isValid);
     onChange(e);
   };
 
@@ -54,7 +62,7 @@ export const PersonalInfoSection = ({
               placeholder="CPF"
               maxLength={14}
             />
-            {!isCpfValid && (
+            {!localCpfValid && (
               <p className="text-red-500 text-sm mt-1">CPF inválido</p>
             )}
           </div>
@@ -68,7 +76,7 @@ export const PersonalInfoSection = ({
             placeholder="Telefone"
             maxLength={15}
           />
-          {!isPhoneValid && (
+          {!localPhoneValid && (
             <p className="text-red-500 text-sm mt-1">Telefone inválido</p>
           )}
         </div>

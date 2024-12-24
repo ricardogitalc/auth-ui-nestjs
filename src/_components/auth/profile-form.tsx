@@ -21,6 +21,8 @@ export default function ProfileForm() {
     isPasswordValid,
     setIsValidZipCode,
     isValidZipCode,
+    setIsCpfValid,
+    setIsPhoneValid,
   } = useProfileForm();
 
   return (
@@ -70,7 +72,12 @@ export default function ProfileForm() {
         <form onSubmit={handleSubmit}>
           <AccountSection formData={formData} onChange={handleChange} />
 
-          <PersonalInfoSection formData={formData} onChange={handleChange} />
+          <PersonalInfoSection
+            formData={formData}
+            onChange={handleChange}
+            setIsCpfValid={setIsCpfValid}
+            setIsPhoneValid={setIsPhoneValid}
+          />
 
           <AddressSection
             formData={formData}

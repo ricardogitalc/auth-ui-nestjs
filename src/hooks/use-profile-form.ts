@@ -34,6 +34,8 @@ export const useProfileForm = () => {
 
   const [formData, setFormData] = useState<ProfileFormData>(initialFormData);
   const [isValidZipCode, setIsValidZipCode] = useState(true);
+  const [isCpfValid, setIsCpfValid] = useState(true);
+  const [isPhoneValid, setIsPhoneValid] = useState(true);
 
   const hasChanges = () => {
     return Object.keys(formData).some(
@@ -172,6 +174,10 @@ export const useProfileForm = () => {
       return false;
     }
 
+    if (!isCpfValid || !isPhoneValid) {
+      return false;
+    }
+
     if (formData.newPassword || formData.currentPassword) {
       const passwordValidation = validatePassword(formData.newPassword);
       return hasChanges() && isPasswordStrong(passwordValidation);
@@ -194,5 +200,9 @@ export const useProfileForm = () => {
       : true,
     setIsValidZipCode,
     isValidZipCode,
+    isCpfValid,
+    setIsCpfValid,
+    isPhoneValid,
+    setIsPhoneValid,
   };
 };
