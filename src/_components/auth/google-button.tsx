@@ -16,8 +16,8 @@ export function GoogleButton() {
       </div>
       <Button
         onClick={() => initiateGoogleAuth()}
-        variant="outline"
-        className="w-full bg-muted-foreground/5 hover:bg-muted-foreground/15 border-border"
+        variant="secondary"
+        className="w-full"
       >
         <FcGoogle className="h-6 w-6" />
         Continue com Google

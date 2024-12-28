@@ -51,12 +51,48 @@ export default function ToastPage() {
         </Button>
       </div>
       <div className="flex gap-4">
-        <Button variant="default">default</Button>
-        <Button variant="secondary">secondary</Button>
-        <Button variant="outline">outline</Button>
-        <Button variant="ghost">ghost</Button>
-        <Button variant="destructive">destructive</Button>
-        <Button variant="link">link</Button>
+        <div className="flex flex-col space-y-4 items-center">
+          <Button variant="default" size="default">
+            default
+          </Button>
+          <Button variant="default" size="sm">
+            default
+          </Button>
+          <Button variant="default" size="lg">
+            default
+          </Button>
+          <Button variant="default" size="icon">
+            default
+          </Button>
+        </div>
+        <div className="flex flex-col space-y-4 items-center">
+          <Button variant="secondary" size="default">
+            secondary
+          </Button>
+          <Button variant="secondary" size="sm">
+            secondary
+          </Button>
+          <Button variant="secondary" size="lg">
+            secondary
+          </Button>
+          <Button variant="secondary" size="icon">
+            secondary
+          </Button>
+        </div>
+        <div className="flex flex-col space-y-4 items-center">
+          <Button variant="ghost" size="default">
+            ghost
+          </Button>
+          <Button variant="ghost" size="sm">
+            ghost
+          </Button>
+          <Button variant="ghost" size="lg">
+            ghost
+          </Button>
+          <Button variant="ghost" size="icon">
+            ghost
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ import {
   HiOutlineUsers,
 } from "react-icons/hi";
 import NullAvatar from "./null-avatar";
+import { BiSolidRocket } from "react-icons/bi";
 
 interface NavItem {
   title: string;
@@ -58,7 +59,7 @@ export default function Navbar() {
   const { logout } = useLogout();
 
   return (
-    <header className="w-full bg-input border-b border-border">
+    <header className="w-full bg-background border-b border-border">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
@@ -66,9 +67,10 @@ export default function Navbar() {
               <TailwindLogo />
             </Link>
           </div>
-          <div className="flex items-center space-x-2 sm:space-x-4 gap-2">
+          <div className="flex items-center space-x-2 sm:space-x-4 ">
             <Link href="/assinatura">
               <Button size="sm" className="font-semibold">
+                <BiSolidRocket className="w-5 h-5" />
                 Assinar
               </Button>
             </Link>

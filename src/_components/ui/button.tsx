@@ -10,15 +10,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "flex w-full justify-center rounded-md bg-primary hover:bg-primary/80 font-semibold shadow-sm text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+          "rounded-md bg-primary hover:bg-primary/80 text-white flex w-full justify-center font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary shadow-sm shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.1)] ring-1 ring-border",
         secondary:
-          "rounded-md bg-input dark:bg-background text-sm font-semibold text-text shadow-sm ring-1 ring-inset ring-border hover:bg-border/5",
-        destructive: "bg-destructive text-white hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "rounded-md bg-input hover:bg-accent/10 text-text text-sm shadow-sm font-semibold ring-1 ring-inset ring-border",
         ghost:
-          "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary hover:text-primary-foreground",
+          "bg-muted hover:bg-muted/70 text-text-foreground hover:text-text",
       },
       size: {
         default: "h-9 px-3 py-1.5",
