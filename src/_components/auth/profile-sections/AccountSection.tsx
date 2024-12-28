@@ -18,7 +18,7 @@ export const AccountSection = ({ formData, onChange }: AccountSectionProps) => {
   return (
     <div>
       <div className="flex flex-col items-start justify-between mt-6 mb-4">
-        <h2 className="text-lg font-semibold tracking-tight">Nome Completo</h2>
+        <h2 className="text-lg font-semibold tracking-tight">Nome completo</h2>
         <h2 className="text-sm tracking-tight text-text-foreground">
           Atualize seu nome completo.
         </h2>
