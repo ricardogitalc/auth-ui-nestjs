@@ -36,7 +36,7 @@ export default function VerifyRegister({
           router.push("/entrar");
         } else {
           toast({
-            variant: "destructive",
+            variant: "error",
             title: "Erro",
             description: response.message,
           });
@@ -44,7 +44,7 @@ export default function VerifyRegister({
         }
       } catch (error: any) {
         toast({
-          variant: "destructive",
+          variant: "error",
           title: "Erro",
           description: error.message,
         });

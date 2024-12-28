@@ -1,18 +1,18 @@
 import { Button } from "@/_components/ui/button";
 import { GoogleButton } from "./google-button";
-import { Eye, EyeOff, KeyRound, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { fetchRegister } from "@/_auth/client/api-client";
-import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
-import { GoogleInput } from "../google-input";
 import { PasswordToggle } from "../pwd-toggle";
 import { insertMaskInPhone } from "@/lib/helpers/masks";
 import { capitalize } from "@/lib/helpers/capitalize-helper";
 import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
 import { PasswordStrength } from "../pwd-strength";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { FooterForm } from "./footer-form";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -52,7 +52,7 @@ export function RegisterForm() {
 
     if (!isPasswordValid) {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Erro",
         description: "A senha não atende aos requisitos mínimos de segurança",
       });
@@ -61,7 +61,7 @@ export function RegisterForm() {
 
     if (formData.password !== confirmPassword) {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Erro",
         description: "As senhas não coincidem",
       });
@@ -82,14 +82,14 @@ export function RegisterForm() {
         });
       } else {
         toast({
-          variant: "destructive",
+          variant: "error",
           title: "Erro",
           description: response.message || "Erro ao realizar cadastro",
         });
       }
     } catch (error: any) {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Erro",
         description: error.message || "Erro ao realizar cadastro",
       });
@@ -122,112 +122,87 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="w-full max-w-[400px] mx-auto">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <AuthHeader
         title="Crie sua conta"
         description="Preencha os campos abaixo"
       />
-      <CardContent className="space-y-6">
-        <form className="space-y-4" onSubmit={handleSubmit}>
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <div className="relative">
-                <GoogleInput
-                  required
-                  maxLength={15}
-                  id="firstName"
-                  placeholder="Nome"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="relative">
-                <GoogleInput
-                  required
-                  maxLength={15}
-                  id="lastName"
-                  placeholder="Sobrenome"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="space-y-2">
             <div className="relative">
-              <GoogleInput
-                required
-                maxLength={50}
-                id="email"
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="pl-10"
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div className="relative">
-              <GoogleInput
+              <Label>Nome</Label>
+              <Input
                 required
                 maxLength={15}
-                id="password"
-                type={showPasswords ? "text" : "password"}
-                placeholder="Senha"
-                value={formData.password}
+                id="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
-                className="pl-10"
-              />
-              <PasswordToggle
-                showPasswords={showPasswords}
-                onClick={() => setShowPasswords(!showPasswords)}
               />
             </div>
+            <div className="relative">
+              <Label>Sobrenome</Label>
+              <Input
+                required
+                maxLength={15}
+                id="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="relative">
+            <Label>Email</Label>
+            <Input
+              required
+              maxLength={50}
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="relative">
+            <Label>Senha</Label>
+            <Input
+              required
+              maxLength={15}
+              id="password"
+              type={showPasswords ? "text" : "password"}
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <PasswordToggle
+              showPasswords={showPasswords}
+              onClick={() => setShowPasswords(!showPasswords)}
+            />
             {showHelper && <PasswordStrength validation={passwordValidation} />}
           </div>
-          <div className="space-y-2">
-            <div className="relative">
-              <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <GoogleInput
-                required
-                maxLength={15}
-                id="confirmPassword"
-                type={showPasswords ? "text" : "password"}
-                placeholder="Confirmar senha"
-                value={confirmPassword}
-                onChange={handleChange}
-                className="pl-10"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPasswords(!showPasswords)}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
-                {showPasswords ? (
-                  <EyeOff className="h-5 w-5 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-5 w-5 text-muted-foreground" />
-                )}
-              </button>
-            </div>
+          <div className="relative">
+            <Label>Confirmar senha</Label>
+            <Input
+              required
+              maxLength={15}
+              id="confirmPassword"
+              type={showPasswords ? "text" : "password"}
+              value={confirmPassword}
+              onChange={handleChange}
+            />
+            <PasswordToggle
+              showPasswords={showPasswords}
+              onClick={() => setShowPasswords(!showPasswords)}
+            />
           </div>
-          <div className="space-y-2">
-            <div className="relative">
-              <GoogleInput
-                required
-                maxLength={15}
-                id="phone"
-                type="tel"
-                placeholder="Telefone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="pl-10"
-              />
-            </div>
+          <div className="relative">
+            <Label>Telefone</Label>
+            <Input
+              required
+              maxLength={15}
+              id="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={handleChange}
+            />
           </div>
           <Button
             type="submit"
@@ -238,16 +213,8 @@ export function RegisterForm() {
           </Button>
         </form>
         <GoogleButton />
-        <div className="text-center text-sm text-muted-foreground">
-          Já tem uma conta?{" "}
-          <Link
-            href="/entrar"
-            className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            Entrar
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+        <FooterForm text="Já tem uma conta?" linkText="Entrar" href="/entrar" />
+      </div>
+    </div>
   );
 }

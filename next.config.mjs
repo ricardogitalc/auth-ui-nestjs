@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['placehold.co', 'picsum.photos', 'via.placeholder.com', 'ui-avatars.com', 'lh3.googleusercontent.com'],
+    domains: ['placehold.co', 'picsum.photos', 'via.placeholder.com', 'ui-avatars.com', 'lh3.googleusercontent.com', 'example.com'],
   },
   // // CACHE
   // experimental: {

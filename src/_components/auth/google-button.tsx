@@ -11,13 +11,13 @@ export function GoogleButton() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-4 text-muted-foreground">OU</span>
+          <span className="bg-background px-4 text-muted-foreground">OU</span>
         </div>
       </div>
       <Button
         onClick={() => initiateGoogleAuth()}
         variant="outline"
-        className="w-full bg-muted-foreground/5 hover:bg-muted-foreground/15"
+        className="w-full bg-muted-foreground/5 hover:bg-muted-foreground/15 border-border"
       >
         <FcGoogle className="h-6 w-6" />
         Continue com Google

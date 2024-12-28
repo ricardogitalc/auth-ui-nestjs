@@ -6,7 +6,8 @@ import { fetchResetPwd } from "@/_auth/client/api-client";
 import { Card, CardContent } from "../ui/card";
 import { AuthHeader } from "./auth-header";
 import { Loader } from "lucide-react";
-import { GoogleInput } from "../google-input";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -31,14 +32,14 @@ export function ForgotPwdForm() {
         });
       } else {
         toast({
-          variant: "destructive",
+          variant: "error",
           title: "Erro",
           description: response.message,
         });
       }
     } catch (error: any) {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Erro",
         description: error.message,
       });
@@ -48,26 +49,23 @@ export function ForgotPwdForm() {
   };
 
   return (
-    <Card className="w-full max-w-[400px] mx-auto">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <AuthHeader
         title="Redefinir senha"
         description="O link será enviado para seu email."
       />
-      <CardContent className="space-y-6">
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <div className="relative">
-              <GoogleInput
-                required
-                maxLength={50}
-                id="email"
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+          <div className="relative">
+            <Label>Email</Label>
+            <Input
+              required
+              maxLength={50}
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? (
@@ -77,12 +75,12 @@ export function ForgotPwdForm() {
             )}
           </Button>
           <Link href={"/entrar"}>
-            <Button variant="outline" className="w-full mt-4">
+            <Button variant="secondary" className="w-full mt-4">
               Voltar
             </Button>
           </Link>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -10,11 +10,15 @@ import { loginSession } from "@/_auth/session/auth-session";
 import { AuthHeader } from "./auth-header";
 import { GoogleInput } from "@/_components/google-input";
 import { useSession } from "@/_contexts/session-context";
+import { PasswordToggle } from "../pwd-toggle";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { FooterForm } from "./footer-form";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswords, setShowPasswords] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -44,14 +48,14 @@ export function LoginForm() {
         router.push("/");
       } else {
         toast({
-          variant: "destructive",
+          variant: "error",
           title: "Erro",
           description: response.message,
         });
       }
     } catch (error: any) {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Erro",
         description: error.message,
       });
@@ -68,81 +72,58 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-[400px] mx-auto">
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <AuthHeader
         title="Bem vindo de volta"
         description="Entre com sua conta para continuar"
       />
-      <CardContent className="space-y-6">
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <GoogleInput
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="relative">
+            <Label>Email</Label>
+            <Input
               required
               maxLength={50}
               id="email"
               type="email"
-              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
             />
           </div>
-          <div className="space-y-2">
-            <div className="relative">
-              <GoogleInput
-                required
-                maxLength={15}
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Senha"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
-                {showPassword ? (
-                  <EyeOff
-                    className="h-5 w-5 text-muted-foreground"
-                    strokeWidth={2.3}
-                  />
-                ) : (
-                  <Eye
-                    className="h-5 w-5 text-muted-foreground"
-                    strokeWidth={2.3}
-                  />
-                )}
-              </button>
-            </div>
+          <div className="relative">
+            <Label>Senha</Label>
+            <Input
+              required
+              maxLength={15}
+              id="password"
+              type={showPasswords ? "text" : "password"}
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <PasswordToggle
+              showPasswords={showPasswords}
+              onClick={() => setShowPasswords(!showPasswords)}
+            />
           </div>
-          <div className="text-end">
+          <div className="text-sm text-end">
             <Link
               href="/esqueceu-senha"
-              className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+              className="font-semibold text-primary hover:text-primary/70"
             >
               Esqueceu a senha?
             </Link>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? (
-              <Loader className="animate-spin ml-4" strokeWidth={1.5} />
-            ) : (
-              "Entrar"
-            )}
+            {loading ? <Loader className="animate-spin" /> : "Entrar"}
           </Button>
         </form>
         <GoogleButton />
-        <div className="text-center text-sm text-muted-foreground">
-          Não tem uma conta?{" "}
-          <Link
-            href="/cadastrar"
-            className="text-sm text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            Cadastrar
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+        <FooterForm
+          text="Não tem uma conta?"
+          linkText="Cadastrar"
+          href="/cadastrar"
+        />
+      </div>
+    </div>
   );
 }

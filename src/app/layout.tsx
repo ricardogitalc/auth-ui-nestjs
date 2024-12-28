@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Toaster } from "@/_components/ui/toaster";
 import { ThemeProvider } from "@/_components/theme/theme-provider";
 import { cn } from "@/lib/utils";
@@ -9,10 +9,9 @@ import "./globals.css";
 import { SessionProvider } from "@/_contexts/session-context";
 import { getSessionApi } from "@/_auth/session/auth-session";
 
-const openSans = Open_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-open-sans",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +28,7 @@ export default async function RootLayout({
 
   return (
     <html lang="pt-BR">
-      <body className={cn("font-openSans antialiased", openSans.variable)}>
+      <body className={cn("font-inter antialiased", inter.variable)}>
         <SessionProvider session={session}>
           <ThemeProvider
             attribute="class"

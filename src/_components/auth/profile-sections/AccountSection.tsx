@@ -19,13 +19,13 @@ export const AccountSection = ({ formData, onChange }: AccountSectionProps) => {
     <div>
       <div className="flex flex-col items-start justify-between mt-6 mb-4">
         <h2 className="text-lg font-semibold tracking-tight">Nome Completo</h2>
-        <h2 className="text-sm tracking-tight text-muted-foreground">
+        <h2 className="text-sm tracking-tight text-text-foreground">
           Atualize seu nome completo.
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-muted-foreground">Nome</Label>
+        <div>
+          <Label>Nome</Label>
           <Input
             required
             maxLength={15}
@@ -35,8 +35,8 @@ export const AccountSection = ({ formData, onChange }: AccountSectionProps) => {
             placeholder="Nome"
           />
         </div>
-        <div className="space-y-2">
-          <Label className="text-muted-foreground">Sobrenome</Label>
+        <div>
+          <Label>Sobrenome</Label>
           <Input
             required
             maxLength={15}

@@ -47,14 +47,14 @@ export const PersonalInfoSection = ({
         <h2 className="text-lg font-semibold tracking-tight">
           Informações pessoais
         </h2>
-        <h2 className="text-sm tracking-tight text-muted-foreground">
+        <h2 className="text-sm tracking-tight text-text-foreground">
           Atualize seus dados pessoais.
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <div className="space-y-2">
-            <Label className="text-muted-foreground">CPF</Label>
+            <Label>CPF</Label>
             <Input
               name="cpf"
               value={formData.cpf}
@@ -68,7 +68,7 @@ export const PersonalInfoSection = ({
           </div>
         </div>
         <div className="space-y-2">
-          <Label className="text-muted-foreground">Telefone</Label>
+          <Label>Telefone</Label>
           <Input
             name="phone"
             value={formData.phone}

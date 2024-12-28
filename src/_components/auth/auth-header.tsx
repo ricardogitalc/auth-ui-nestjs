@@ -1,5 +1,4 @@
 import { TailwindLogo } from "../../../public/tailwind-logo";
-import { CardHeader } from "../ui/card";
 
 interface AuthHeaderProps {
   title: string;
@@ -8,14 +7,16 @@ interface AuthHeaderProps {
 
 export function AuthHeader({ title, description }: AuthHeaderProps) {
   return (
-    <CardHeader className="space-y-4 my-4">
-      <div className="flex justify-center items-center">
-        <TailwindLogo />
-      </div>
-      <div className="text-center">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-    </CardHeader>
+    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img
+        alt="Your Company"
+        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+        className="mx-auto h-10 w-auto"
+      />
+      <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-text">
+        {title}
+      </h2>
+      <p className="text-sm text-center text-muted-foreground">{description}</p>
+    </div>
   );
 }

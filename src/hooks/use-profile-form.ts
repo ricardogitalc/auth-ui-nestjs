@@ -60,7 +60,7 @@ export const useProfileForm = () => {
 
     if (!data.currentPassword || !data.newPassword) {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Erro",
         description: "Preencha tanto a senha atual quanto a nova senha.",
       });
@@ -86,7 +86,7 @@ export const useProfileForm = () => {
 
   const handleError = (error: any) => {
     toast({
-      variant: "destructive",
+      variant: "error",
       title: "Erro",
       description: error.message || "Erro ao atualizar perfil",
     });
@@ -133,7 +133,7 @@ export const useProfileForm = () => {
       });
     } else {
       toast({
-        variant: "destructive",
+        variant: "error",
         title: "Erro",
         description: response.message || "Erro ao atualizar perfil",
       });
@@ -182,6 +182,7 @@ export const useProfileForm = () => {
       const passwordValidation = validatePassword(formData.newPassword);
       return hasChanges() && isPasswordStrong(passwordValidation);
     }
+
     return hasChanges();
   };
 
