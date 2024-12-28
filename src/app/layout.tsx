@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aplicativo",
-  description: "Descrição do aplicativo",
+  title: "Autenticação",
+  description: "Autenticação com Next.js e NestJS",
 };
 
 export default async function RootLayout({

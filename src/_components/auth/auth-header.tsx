@@ -13,7 +13,7 @@ export function AuthHeader({ title, description }: AuthHeaderProps) {
         src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
         className="mx-auto h-10 w-auto"
       />
-      <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-text">
+      <h2 className="mt-4 text-center text-2xl/9 font-bold tracking-tight text-text">
         {title}
       </h2>
       <p className="text-sm text-center text-muted-foreground">{description}</p>
