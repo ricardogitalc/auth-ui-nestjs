@@ -1,6 +1,6 @@
 "use client";
 
-import { ResetPwdForm } from "@/_components/auth/reset-pwd-form";
+import { ResetPwdForm } from "@/_components/auth/forms/reset-pwd-form";
 import { useRouter } from "next/navigation";
 
 interface ResetPageProps {
@@ -16,9 +16,5 @@ export default function ResetPage({ searchParams }: ResetPageProps) {
     return;
   }
 
-  return (
-    <div className="container mx-auto max-w-md p-6">
-      <ResetPwdForm token={token} />
-    </div>
-  );
+  return <ResetPwdForm token={token} />;
 }

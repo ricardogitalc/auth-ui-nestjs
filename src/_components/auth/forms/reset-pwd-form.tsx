@@ -5,13 +5,12 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwdConfirm } from "@/_auth/client/api-client";
 import { useRouter } from "next/navigation";
-import { Card, CardContent } from "../ui/card";
-import { AuthHeader } from "./auth-header";
-import { PasswordToggle } from "../pwd-toggle";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { AuthHeader } from "../auth-header";
+import { PasswordToggle } from "../../pwd-toggle";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
 import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
-import { PasswordStrength } from "../pwd-strength";
+import { PasswordStrength } from "../../pwd-strength";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

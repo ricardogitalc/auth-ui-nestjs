@@ -1,12 +1,12 @@
 import { Button } from "@/_components/ui/button";
-import { Card, CardContent, CardHeader } from "@/_components/ui/card";
+import { CardContent } from "@/_components/ui/card";
 import { Loader, Save } from "lucide-react";
 import { useProfileForm } from "@/hooks/use-profile-form";
-import { AccountSection } from "./profile-sections/AccountSection";
-import { AddressSection } from "./profile-sections/AddressSection";
-import { PersonalInfoSection } from "./profile-sections/PersonalInfoSection";
-import { PasswordSection } from "./profile-sections/PasswordSection";
-import { ProfilePhotoUpload } from "../profile-photo-upload";
+import { AccountSection } from "@/_components/auth/profile-sections/AccountSection";
+import { ProfilePhotoUpload } from "@/_components/profile-photo-upload";
+import { PersonalInfoSection } from "../profile-sections/PersonalInfoSection";
+import { AddressSection } from "../profile-sections/AddressSection";
+import { PasswordSection } from "../profile-sections/PasswordSection";
 
 export default function ProfileForm() {
   const {

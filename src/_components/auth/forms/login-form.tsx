@@ -1,19 +1,17 @@
 import { Button } from "@/_components/ui/button";
-import { Card, CardContent } from "@/_components/ui/card";
-import { GoogleButton } from "./google-button";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { GoogleButton } from "../google-button";
+import { Loader } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { loginSession } from "@/_auth/session/auth-session";
-import { AuthHeader } from "./auth-header";
-import { GoogleInput } from "@/_components/google-input";
+import { AuthHeader } from "../auth-header";
 import { useSession } from "@/_contexts/session-context";
-import { PasswordToggle } from "../pwd-toggle";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { FooterForm } from "./footer-form";
+import { PasswordToggle } from "../../pwd-toggle";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { FooterForm } from "../footer-form";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

@@ -1,18 +1,18 @@
 import { Button } from "@/_components/ui/button";
-import { GoogleButton } from "./google-button";
+import { GoogleButton } from "../google-button";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchRegister } from "@/_auth/client/api-client";
-import { AuthHeader } from "./auth-header";
-import { PasswordToggle } from "../pwd-toggle";
+import { AuthHeader } from "../auth-header";
+import { PasswordToggle } from "../../pwd-toggle";
 import { insertMaskInPhone } from "@/lib/helpers/masks";
 import { capitalize } from "@/lib/helpers/capitalize-helper";
 import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
-import { PasswordStrength } from "../pwd-strength";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { FooterForm } from "./footer-form";
+import { PasswordStrength } from "../../pwd-strength";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { FooterForm } from "../footer-form";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

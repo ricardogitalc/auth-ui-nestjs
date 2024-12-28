@@ -66,7 +66,7 @@ export default function Navbar() {
               <TailwindLogo />
             </Link>
           </div>
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4 gap-2">
             <Link href="/assinatura">
               <Button size="sm" className="font-semibold">
                 Assinar

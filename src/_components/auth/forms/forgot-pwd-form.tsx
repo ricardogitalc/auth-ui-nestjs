@@ -3,11 +3,10 @@ import { Button } from "@/_components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwd } from "@/_auth/client/api-client";
-import { Card, CardContent } from "../ui/card";
-import { AuthHeader } from "./auth-header";
+import { AuthHeader } from "../auth-header";
+import { Label } from "@/_components/ui/label";
+import { Input } from "@/_components/ui/input";
 import { Loader } from "lucide-react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
