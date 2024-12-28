@@ -130,10 +130,7 @@ export default function Navbar() {
                         </DropdownMenuItem>
                       </Link>
                     ))}
-                    <DropdownMenuItem
-                      asChild
-                      className="focus:bg-error-foreground/80"
-                    >
+                    <DropdownMenuItem asChild className="focus:bg-error/20">
                       <button
                         onClick={logout}
                         className="w-full flex cursor-pointer items-center"

@@ -10,6 +10,8 @@ import { AuthHeader } from "./auth-header";
 import { PasswordToggle } from "../pwd-toggle";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
+import { PasswordStrength } from "../pwd-strength";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -27,8 +29,24 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
     confirmNewPassword: "",
   });
 
+  const passwordValidation = validatePassword(formData.newPassword);
+  const isPasswordValid = isPasswordStrong(passwordValidation);
+  const showHelper =
+    formData.newPassword &&
+    formData.newPassword.length > 0 &&
+    !isPasswordStrong(passwordValidation);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isPasswordValid) {
+      toast({
+        variant: "error",
+        title: "Erro",
+        description: "A senha não atende aos requisitos mínimos de segurança",
+      });
+      return;
+    }
 
     if (formData.newPassword !== formData.confirmNewPassword) {
       toast({
@@ -96,6 +114,7 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
               showPasswords={showPasswords}
               onClick={() => setShowPasswords(!showPasswords)}
             />
+            {showHelper && <PasswordStrength validation={passwordValidation} />}
           </div>
           <div className="relative">
             <Label>Confirmar senha</Label>
@@ -112,7 +131,13 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
               onClick={() => setShowPasswords(!showPasswords)}
             />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={
+              loading || !isPasswordValid || !formData.confirmNewPassword
+            }
+          >
             {loading ? (
               <Loader className="animate-spin ml-4" />
             ) : (
