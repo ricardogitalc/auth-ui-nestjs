@@ -13,7 +13,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "@/_contexts/session-context";
 import { useLogout } from "@/hooks/use-logout";
-import { TailwindLogo } from "../../public/tailwind-logo";
 import { ThemeSwitcher } from "./theme/theme-switcher";
 import {
   HiOutlineLogout,
@@ -24,6 +23,7 @@ import {
 } from "react-icons/hi";
 import NullAvatar from "./null-avatar";
 import { BiSolidRocket } from "react-icons/bi";
+import LogoTipoIcon from "../../public/logotipo-icon";
 
 interface NavItem {
   title: string;
@@ -63,9 +63,11 @@ export default function Navbar() {
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2">
-              <TailwindLogo />
-            </Link>
+            <div className="w-8 h-8">
+              <Link href="/" className="flex items-center gap-2">
+                <LogoTipoIcon />
+              </Link>
+            </div>
           </div>
           <div className="flex items-center space-x-4">
             <Link href="/assinatura">

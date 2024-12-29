@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LogoTipoIcon from "../../../public/logotipo-icon";
 
 interface AuthHeaderProps {
   title: string;
@@ -7,12 +7,10 @@ interface AuthHeaderProps {
 
 export function AuthHeader({ title, description }: AuthHeaderProps) {
   return (
-    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-      <Image
-        alt="Your Company"
-        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-        className="mx-auto h-10 w-auto"
-      />
+    <div className="flex flex-col items-center justify-center sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="w-12 h-12">
+        <LogoTipoIcon />
+      </div>
       <h2 className="mt-4 text-center text-2xl/9 font-bold tracking-tight text-text">
         {title}
       </h2>

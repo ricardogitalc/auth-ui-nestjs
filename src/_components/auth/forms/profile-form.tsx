@@ -5,7 +5,7 @@ import { useProfileForm } from "@/hooks/use-profile-form";
 import { AccountSection } from "@/_components/auth/profile-sections/AccountSection";
 import { ProfilePhotoUpload } from "@/_components/profile-photo-upload";
 import { PersonalInfoSection } from "../profile-sections/PersonalInfoSection";
-import { AddressSection } from "../profile-sections/AddressSection";
+// import { AddressSection } from "../profile-sections/AddressSection";
 import { PasswordSection } from "../profile-sections/PasswordSection";
 
 export default function ProfileForm() {
@@ -18,8 +18,8 @@ export default function ProfileForm() {
     setFormData,
     isFormValid,
     isPasswordValid,
-    setIsValidZipCode,
-    isValidZipCode,
+    // setIsValidZipCode,
+    // isValidZipCode,
     setIsCpfValid,
     setIsPhoneValid,
   } = useProfileForm();
@@ -48,13 +48,13 @@ export default function ProfileForm() {
             setIsCpfValid={setIsCpfValid}
             setIsPhoneValid={setIsPhoneValid}
           />
-          <AddressSection
+          {/* <AddressSection
             formData={formData}
             onChange={handleChange}
             setFormData={setFormData}
             setIsValidZipCode={setIsValidZipCode}
             isValidZipCode={isValidZipCode}
-          />
+          /> */}
           {user?.provider === "CREDENTIALS" && (
             <>
               <PasswordSection
