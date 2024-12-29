@@ -98,11 +98,13 @@ export default function Navbar() {
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1 gap-2">
                       <div className="mt-2 flex flex-col gap-1">
-                        <p className="text-sm font-medium leading-none">
+                        <p className="text-sm leading-none">
                           {user?.firstName} {user?.lastName}
                         </p>
-                        <p className="text-sm text-muted-foreground/90">
-                          {user?.email}
+                        <p className="text-sm font-normal text-text-foreground">
+                          {user?.email && user.email.length > 25
+                            ? user.email.slice(0, 25) + "..."
+                            : user?.email}
                         </p>
                       </div>
                       <div>
