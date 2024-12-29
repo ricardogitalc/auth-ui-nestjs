@@ -25,12 +25,12 @@
     --ring: 217 5.9% 10%;
     --radius: 0.75rem;
     --white: 0 0% 100%;
-    --success: 142 69% 58%;
-    --success-foreground: 138 76% 97%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 33 100%, 96%;
-    --error: 358 75% 59%;
-    --error-foreground: 0 86% 97%;
+    --success: 142 71% 45%;
+    --success-foreground: 141 84% 95%;
+    --warning: 25 95% 53%;
+    --warning-foreground: 34 100% 94%;
+    --error: 0 84% 60%;
+    --error-foreground: 0 93% 96%;
   }
 
   .dark {
@@ -54,12 +54,12 @@
     --destructive-foreground: 0 0% 98%;
     --ring: 223 4.9% 83.9%;
     --white: 0 0% 100%;
-    --success: 142 69% 58%;
-    --success-foreground: 144 61% 15%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 38 92% 15%;
-    --error: 358 75% 59%;
-    --error-foreground: 358 75% 15%;
+    --success: 142 71% 45%;
+    --success-foreground: 144 59% 16%;
+    --warning: 25 95% 53%;
+    --warning-foreground: 38 91% 16%;
+    --error: 0 84% 60%;
+    --error-foreground: 358 77% 16%;
   }
 }
 

@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { ProfileFormData } from "@/_auth/types/auth.types";
-import { PasswordToggle } from "../../pwd-toggle";
 import { PasswordStrength } from "../../pwd-strength";
 import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
 import { Input } from "@/_components/ui/input";
@@ -16,7 +14,6 @@ export const PasswordSection = ({
   formData,
   onChange,
 }: PasswordSectionProps) => {
-  const [showPasswords, setShowPasswords] = useState(false);
   const passwordValidation = validatePassword(formData?.newPassword || "");
   const showHelper =
     formData?.newPassword &&
@@ -36,30 +33,22 @@ export const PasswordSection = ({
           <Label>Senha atual</Label>
           <Input
             name="currentPassword"
-            type={showPasswords ? "text" : "password"}
+            variant="password"
             value={formData.currentPassword}
             onChange={onChange}
             placeholder="•••••••••••••••"
             maxLength={15}
-          />
-          <PasswordToggle
-            showPasswords={showPasswords}
-            onClick={() => setShowPasswords(!showPasswords)}
           />
         </div>
         <div className="relative">
           <Label>Nova senha</Label>
           <Input
             name="newPassword"
-            type={showPasswords ? "text" : "password"}
+            variant="password"
             value={formData.newPassword}
             onChange={onChange}
             placeholder="•••••••••••••••"
             maxLength={15}
-          />
-          <PasswordToggle
-            showPasswords={showPasswords}
-            onClick={() => setShowPasswords(!showPasswords)}
           />
         </div>
         {showHelper && <PasswordStrength validation={passwordValidation} />}

@@ -6,7 +6,6 @@ import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwdConfirm } from "@/_auth/client/api-client";
 import { useRouter } from "next/navigation";
 import { AuthHeader } from "./auth-header";
-import { PasswordToggle } from "../pwd-toggle";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
@@ -19,10 +18,8 @@ interface ResetPasswordFormProps {
 }
 
 export function ResetPwdForm({ token }: ResetPasswordFormProps) {
-  const [showPasswords, setShowPasswords] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const router = useRouter();
   const [formData, setFormData] = useState({
     newPassword: "",
     confirmNewPassword: "",
@@ -105,13 +102,9 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
               required
               maxLength={15}
               id="newPassword"
-              type={showPasswords ? "text" : "password"}
+              variant="password"
               value={formData.newPassword}
               onChange={handleChange}
-            />
-            <PasswordToggle
-              showPasswords={showPasswords}
-              onClick={() => setShowPasswords(!showPasswords)}
             />
             {showHelper && <PasswordStrength validation={passwordValidation} />}
           </div>
@@ -121,13 +114,9 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
               required
               maxLength={15}
               id="confirmNewPassword"
-              type={showPasswords ? "text" : "password"}
+              variant="password"
               value={formData.confirmNewPassword}
               onChange={handleChange}
-            />
-            <PasswordToggle
-              showPasswords={showPasswords}
-              onClick={() => setShowPasswords(!showPasswords)}
             />
           </div>
           <Button

@@ -23,7 +23,7 @@ export function FileUpload({
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0];
         if (file.size > maxSize) {
-          setError("Arquivo muito grande. Máximo 15MB.");
+          setError("Arquivo muito grande. Máximo 5MB.");
           return;
         }
 

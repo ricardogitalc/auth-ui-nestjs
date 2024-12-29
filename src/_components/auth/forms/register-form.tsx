@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchRegister } from "@/_auth/client/api-client";
 import { AuthHeader } from "../auth-header";
-import { PasswordToggle } from "../../pwd-toggle";
 import { insertMaskInPhone } from "@/lib/helpers/masks";
 import { capitalize } from "@/lib/helpers/capitalize-helper";
 import { validatePassword, isPasswordStrong } from "@/lib/helpers/pwd-helper";
@@ -17,7 +16,6 @@ import { FooterForm } from "../footer-form";
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function RegisterForm() {
-  const [showPasswords, setShowPasswords] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -168,13 +166,9 @@ export function RegisterForm() {
               required
               maxLength={15}
               id="password"
-              type={showPasswords ? "text" : "password"}
+              variant="password"
               value={formData.password}
               onChange={handleChange}
-            />
-            <PasswordToggle
-              showPasswords={showPasswords}
-              onClick={() => setShowPasswords(!showPasswords)}
             />
             {showHelper && <PasswordStrength validation={passwordValidation} />}
           </div>
@@ -184,13 +178,9 @@ export function RegisterForm() {
               required
               maxLength={15}
               id="confirmPassword"
-              type={showPasswords ? "text" : "password"}
+              variant="password"
               value={confirmPassword}
               onChange={handleChange}
-            />
-            <PasswordToggle
-              showPasswords={showPasswords}
-              onClick={() => setShowPasswords(!showPasswords)}
             />
           </div>
           <div className="relative">

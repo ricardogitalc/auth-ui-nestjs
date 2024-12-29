@@ -18,15 +18,15 @@ export const PasswordStrength = ({ validation }: PasswordStrengthProps) => {
       {requirements.map(({ key, label }) => (
         <div key={key} className="flex items-center gap-2">
           {validation[key as keyof PasswordValidation] ? (
-            <Check className="w-4 h-4 text-green-500" />
+            <Check className="w-4 h-4 text-success" />
           ) : (
-            <X className="w-4 h-4 text-red-500" />
+            <X className="w-4 h-4 text-error" />
           )}
           <span
             className={
               validation[key as keyof PasswordValidation]
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-success"
+                : "text-error"
             }
           >
             {label}

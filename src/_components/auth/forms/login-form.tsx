@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { loginSession } from "@/_auth/session/auth-session";
 import { AuthHeader } from "../auth-header";
 import { useSession } from "@/_contexts/session-context";
-import { PasswordToggle } from "../../pwd-toggle";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { FooterForm } from "../footer-form";
@@ -16,7 +15,6 @@ import { FooterForm } from "../footer-form";
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function LoginForm() {
-  const [showPasswords, setShowPasswords] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -75,8 +73,8 @@ export function LoginForm() {
         title="Bem vindo de volta"
         description="Entre com sua conta para continuar"
       />
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form onSubmit={handleSubmit}>
           <div className="relative">
             <Label>Email</Label>
             <Input
@@ -89,29 +87,25 @@ export function LoginForm() {
             />
           </div>
           <div className="relative">
-            <Label>Senha</Label>
+            <div className="flex justify-between items-end text-sm pt-6 pb-2 ">
+              <label>Senha</label>
+              <Link
+                href="/esqueceu-senha"
+                className="font-semibold text-primary hover:text-primary/70"
+              >
+                Esqueceu a senha?
+              </Link>
+            </div>
             <Input
               required
               maxLength={15}
               id="password"
-              type={showPasswords ? "text" : "password"}
+              variant="password"
               value={formData.password}
               onChange={handleChange}
             />
-            <PasswordToggle
-              showPasswords={showPasswords}
-              onClick={() => setShowPasswords(!showPasswords)}
-            />
           </div>
-          <div className="text-sm text-end">
-            <Link
-              href="/esqueceu-senha"
-              className="font-semibold text-primary hover:text-primary/70"
-            >
-              Esqueceu a senha?
-            </Link>
-          </div>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full my-6" disabled={loading}>
             {loading ? <Loader className="animate-spin" /> : "Entrar"}
           </Button>
         </form>
