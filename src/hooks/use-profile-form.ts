@@ -54,7 +54,7 @@ export const useProfileForm = () => {
 
   const validatePasswordFields = (data: ProfileFormData) => {
     if (!data.currentPassword && !data.newPassword) {
-      const { currentPassword, newPassword, ...rest } = data;
+      const { ...rest } = data;
       return { isValid: true, data: rest };
     }
 
@@ -84,11 +84,11 @@ export const useProfileForm = () => {
     return true;
   };
 
-  const handleError = (error: any) => {
+  const handleError = (error: unknown) => {
     toast({
       variant: "error",
       title: "Erro",
-      description: error.message || "Erro ao atualizar perfil",
+      description: error instanceof Error ? error.message : "Erro desconhecido",
     });
   };
 
@@ -162,7 +162,7 @@ export const useProfileForm = () => {
 
       const response = await updateProfileAction(validation.data);
       handleUpdateResponse(response);
-    } catch (error: any) {
+    } catch (error: unknown) {
       handleError(error);
     } finally {
       setLoading(false);

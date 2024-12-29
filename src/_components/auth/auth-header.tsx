@@ -1,4 +1,4 @@
-import { TailwindLogo } from "../../../public/tailwind-logo";
+import Image from "next/image";
 
 interface AuthHeaderProps {
   title: string;
@@ -8,7 +8,7 @@ interface AuthHeaderProps {
 export function AuthHeader({ title, description }: AuthHeaderProps) {
   return (
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img
+      <Image
         alt="Your Company"
         src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
         className="mx-auto h-10 w-auto"

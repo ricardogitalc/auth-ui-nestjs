@@ -1,7 +1,6 @@
 import { Button } from "@/_components/ui/button";
 import { CloudUpload } from "lucide-react";
 import Image from "next/image";
-import { HiUser } from "react-icons/hi2";
 import { useRef } from "react";
 import { compressImage } from "@/lib/helpers/image-helper";
 import NullAvatar from "./null-avatar";

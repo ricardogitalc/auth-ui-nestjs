@@ -12,10 +12,11 @@ export async function verifyRegisterAction(verificationToken: string) {
   try {
     const response = await fetchVerifyRegister(verificationToken);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       ok: false,
-      message: error.message || "Erro ao verificar registro",
+      message:
+        error instanceof Error ? error.message : "Erro ao verificar registro",
     };
   }
 }
@@ -33,10 +34,11 @@ export async function updateProfileAction(data: AuthTypes.UpdateUserType) {
 
     const response = await fetchUpdateProfile(accessToken, data);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       ok: false,
-      message: error.message || "Erro ao atualizar perfil",
+      message:
+        error instanceof Error ? error.message : "Erro ao atualizar perfil",
     };
   }
 }

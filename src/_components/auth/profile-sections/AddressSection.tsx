@@ -40,7 +40,7 @@ export const AddressSection = ({
           state: address.estado,
         });
         setIsValidZipCode(true);
-      } catch (error) {
+      } catch {
         setCepError("CEP não encontrado");
         setIsValidZipCode(false);
       }

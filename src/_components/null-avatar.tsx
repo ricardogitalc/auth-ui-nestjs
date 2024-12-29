@@ -1,4 +1,3 @@
-import { HiUserCircle } from "react-icons/hi2";
 import { HiUser } from "react-icons/hi2";
 
 export default function NullAvatar() {

@@ -4,7 +4,6 @@ import { Button } from "@/_components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwdConfirm } from "@/_auth/client/api-client";
-import { useRouter } from "next/navigation";
 import { AuthHeader } from "./auth-header";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -70,11 +69,12 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
           description: response.message,
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "error",
         title: "Erro",
-        description: error.message,
+        description:
+          error instanceof Error ? error.message : "Erro desconhecido",
       });
     } finally {
       setLoading(false);

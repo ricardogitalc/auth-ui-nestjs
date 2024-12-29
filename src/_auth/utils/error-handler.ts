@@ -10,13 +10,20 @@ type GraphQLError = {
   };
 };
 
-export function getErrorMessage(error: any): string {
+interface ErrorResponse {
+  response?: {
+    errors?: GraphQLError[];
+  };
+}
+
+export function getErrorMessage(error: unknown): string {
   if (error instanceof TypeError && error.message === "fetch failed") {
     return "Não foi possível conectar ao servidor.";
   }
 
-  if (error.response?.errors) {
-    const graphqlError = error.response.errors[0] as GraphQLError;
+  const errorResponse = error as ErrorResponse;
+  if (errorResponse?.response?.errors) {
+    const graphqlError = errorResponse.response.errors[0];
 
     switch (graphqlError.extensions?.code) {
       case "UNAUTHORIZED":

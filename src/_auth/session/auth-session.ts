@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import * as jose from "jose";
-import { redirect } from "next/navigation";
 import { getErrorMessage } from "../utils/error-handler";
 import * as AuthTypes from "@/_auth/types/auth.types";
 import {
@@ -63,7 +62,7 @@ export async function loginSession(
       ...response,
       user: session.user,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw new Error(getErrorMessage(error));
   }
 }
@@ -99,7 +98,7 @@ export async function getSessionApi(): Promise<AuthTypes.SessionType> {
         updatedAt: user.updatedAt,
       },
     };
-  } catch (error) {
+  } catch {
     return { isAuthenticated: false };
   }
 }
@@ -135,7 +134,7 @@ export async function updateSession(request: NextRequest) {
       ok: true,
       response: setAuthCookies(NextResponse.next(), newTokens),
     };
-  } catch (error) {
+  } catch {
     return { ok: false, response: clearTokens() };
   }
 }
@@ -152,7 +151,7 @@ async function getTokenInfo(token: string, secret: string) {
       isValid: timeLeft > 0,
       payload: decoded.payload,
     };
-  } catch (error) {
+  } catch {
     return {
       timeLeft: -1,
       isValid: false,

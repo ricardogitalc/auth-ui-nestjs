@@ -85,11 +85,12 @@ export function RegisterForm() {
           description: response.message || "Erro ao realizar cadastro",
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "error",
         title: "Erro",
-        description: error.message || "Erro ao realizar cadastro",
+        description:
+          error instanceof Error ? error.message : "Erro ao realizar cadastro",
       });
     } finally {
       setLoading(false);

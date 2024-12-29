@@ -16,13 +16,14 @@ export default function TermsPage() {
 
         <div className="prose prose-lg max-w-none text-text">
           <p className="mb-6">
-            Estes Termos de Serviço do Site ("Termos") regem o uso do
-            https://mobbin.com (o "Site") e qualquer software relacionado da
-            Mobbin (o "Software") ou serviços (coletivamente, os "Serviços")
-            fornecidos pela Mobbin Pte. Ltd. e suas subsidiárias, representantes
-            e afiliadas (coletivamente, "Mobbin", "nós", "nos" ou "nosso")
-            independentemente de você, o cliente ou usuário, ser um usuário pago
-            ou um visitante não pagante.
+            Estes Termos de Serviço do Site (&quot;Termos&quot;) regem o uso do
+            https://mobbin.com (o &quot;Site&quot;) e qualquer software
+            relacionado da Mobbin (o &quot;Software&quot;) ou serviços
+            (coletivamente, os &quot;Serviços&quot;) fornecidos pela Mobbin Pte.
+            Ltd. e suas subsidiárias, representantes e afiliadas (coletivamente,
+            &quot;Mobbin&quot;, &quot;nós&quot;, &quot;nos&quot; ou
+            &quot;nosso&quot;) independentemente de você, o cliente ou usuário,
+            ser um usuário pago ou um visitante não pagante.
           </p>
 
           <p className="mb-6">

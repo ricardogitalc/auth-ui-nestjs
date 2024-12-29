@@ -4,7 +4,6 @@ import { Button } from "@/_components/ui/button";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { fetchResetPwdConfirm } from "@/_auth/client/api-client";
-import { useRouter } from "next/navigation";
 import { AuthHeader } from "../auth-header";
 import { PasswordToggle } from "../../pwd-toggle";
 import { Input } from "../../ui/input";
@@ -22,7 +21,6 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
   const [showPasswords, setShowPasswords] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const router = useRouter();
   const [formData, setFormData] = useState({
     newPassword: "",
     confirmNewPassword: "",
@@ -73,11 +71,12 @@ export function ResetPwdForm({ token }: ResetPasswordFormProps) {
           description: response.message,
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "error",
         title: "Erro",
-        description: error.message,
+        description:
+          error instanceof Error ? error.message : "Erro desconhecido",
       });
     } finally {
       setLoading(false);

@@ -4,7 +4,7 @@ export type LoginType = {
 };
 
 export type LoginResponse = {
-  user: any;
+  user: UserType;
   ok: boolean;
   message: string;
   accessToken: string;

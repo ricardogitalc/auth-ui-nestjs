@@ -42,11 +42,12 @@ export default function VerifyRegister({
           });
           router.push("/cadastrar");
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         toast({
           variant: "error",
           title: "Erro",
-          description: error.message,
+          description:
+            error instanceof Error ? error.message : "Erro desconhecido",
         });
         router.push("/cadastrar");
       }

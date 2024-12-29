@@ -36,11 +36,12 @@ export function ForgotPwdForm() {
           description: response.message,
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "error",
         title: "Erro",
-        description: error.message,
+        description:
+          error instanceof Error ? error.message : "Erro desconhecido",
       });
     } finally {
       setLoading(false);
