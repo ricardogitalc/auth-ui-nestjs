@@ -4,9 +4,10 @@ import {
   fetchVerifyRegister,
   fetchUpdateProfile,
 } from "@/_auth/client/api-client";
-import { logoutSession } from "@/_auth/session/auth-session";
+import { getSessionApi, logoutSession } from "@/_auth/session/auth-session";
 import * as AuthTypes from "@/_auth/types/auth.types";
 import { cookies } from "next/headers";
+import { AUTH_CONFIG } from "@/_config/auth.config";
 
 export async function verifyRegisterAction(verificationToken: string) {
   try {
@@ -41,4 +42,14 @@ export async function updateProfileAction(data: AuthTypes.UpdateUserType) {
         error instanceof Error ? error.message : "Erro ao atualizar perfil",
     };
   }
+}
+
+export async function handleGoogleAuth(
+  accessToken: string,
+  refreshToken: string
+) {
+  cookies().set("accessToken", accessToken, AUTH_CONFIG.COOKIE_OPTIONS);
+  cookies().set("refreshToken", refreshToken, AUTH_CONFIG.COOKIE_OPTIONS);
+
+  return await getSessionApi();
 }
